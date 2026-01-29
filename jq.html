@@ -623,6 +623,19 @@
       cursor: pointer;
     }
 
+    .share-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 176, 138, 0.75);
+      color: #9a6b5d;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
     .diary-cover {
       margin-top: 12px;
       padding: 14px;
@@ -665,6 +678,10 @@
         linear-gradient(180deg, #fff8f2, #fff4ee);
       border: 1px solid rgba(255, 205, 183, 0.6);
       overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      align-content: start;
     }
 
     .bubble-icon {
@@ -689,9 +706,9 @@
     }
 
     .photo-bubble {
-      position: absolute;
-      width: 78px;
-      height: 78px;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       border-radius: 50%;
       overflow: hidden;
       border: 2px solid rgba(255, 197, 173, 0.75);
@@ -714,6 +731,12 @@
       font-size: 10px;
       color: #9a7f74;
       white-space: nowrap;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
     }
 
     .topic-sheet {
@@ -769,6 +792,131 @@
       justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
+    }
+
+    .member-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .member-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      background: #fff7f1;
+      border-radius: 16px;
+      padding: 10px 12px;
+    }
+
+    .member-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(255, 197, 173, 0.6);
+      display: grid;
+      place-items: center;
+      color: #c06a4f;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .member-thumb {
+      height: 42px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 197, 173, 0.45);
+      background: #fff;
+    }
+
+    .member-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(31, 23, 19, 0.35);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 10;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(360px, 92vw);
+      background: #fff;
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid rgba(255, 197, 173, 0.6);
+      box-shadow: 0 18px 36px rgba(62, 42, 33, 0.2);
+      display: grid;
+      gap: 12px;
+    }
+
+    .select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .select-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+    }
+
+    .select-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .select-item.selected {
+      outline: 2px solid rgba(255, 150, 120, 0.9);
+      outline-offset: 2px;
+    }
+
+    .select-item.selected::after {
+      content: "✓";
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 150, 120, 0.95);
+      color: #fff;
+      font-size: 12px;
+      display: grid;
+      place-items: center;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #7a6258;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
     }
 
     .mini-widget {
@@ -955,7 +1103,7 @@
             </div>
             <div class="soft-note">随手拍记录开心时刻，弱化“上传”感。</div>
             <div class="camera-actions">
-              <button class="camera-pill">📷 轻触记录</button>
+              <button class="share-pill">🫶 发送到家庭共鸣</button>
             </div>
             <div class="personal-grid">
               <div class="personal-photo">
@@ -969,9 +1117,39 @@
               </div>
             </div>
             <div class="diary-cover">
-              <strong>精美画册封面</strong>
+              <strong>个人总结</strong>
               <span class="soft-note">“这 7 天你过得很充实，是否要将这份快乐投射到家桥？”</span>
               <span class="soft-note">Check 是一种自我治愈，而非审核。</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">
+              <span>家庭成员总结</span>
+              <span class="chip">最近十天</span>
+            </div>
+            <div class="member-list">
+              <div class="member-row">
+                <div class="member-avatar">爸</div>
+                <div class="member-thumb">
+                  <img src="static/1769656829735_d.jpg" alt="爸爸的照片" />
+                </div>
+                <button class="ghost-btn member-view" data-member="dad">查看</button>
+              </div>
+              <div class="member-row">
+                <div class="member-avatar">妈</div>
+                <div class="member-thumb">
+                  <img src="static/1769656851571_d.jpg" alt="妈妈的照片" />
+                </div>
+                <button class="ghost-btn member-view" data-member="mom">查看</button>
+              </div>
+              <div class="member-row">
+                <div class="member-avatar">我</div>
+                <div class="member-thumb">
+                  <img src="static/1769656877772_d.jpg" alt="我的照片" />
+                </div>
+                <button class="ghost-btn member-view" data-member="me">查看</button>
+              </div>
             </div>
           </div>
 
@@ -980,24 +1158,11 @@
               <span>家庭共鸣空间</span>
               <span class="chip">Family Resonance</span>
             </div>
-            <div class="gravity-field" id="resonance-field"></div>
-            <div class="topic-sheet" id="topic-sheet">
-              <div class="section-title" style="margin-bottom: 6px;">
-                <span>话语桥梁</span>
-                <span class="chip">自动生成</span>
-              </div>
-              <div class="topic-pill">🍰 “这个看起来很好吃，是在哪家店买的？下次带我去尝尝？”</div>
-              <div class="topic-pill">这个烟花很好看啊！</div>
-              <div class="topic-pill">这盘麻将胡了没有？</div>
-              <textarea class="topic-editor" placeholder="也可以自己编辑话语…"></textarea>
-              <div class="summary-actions">
-                <button class="ghost-btn" id="summary-btn">生成家庭共鸣小结</button>
-                <span class="soft-note">点击后生成一段总结</span>
-              </div>
-              <div class="summary-card hidden" id="summary-card">
-                家庭共鸣小结：这一阵子家人分享了美食、烟花和一局麻将的日常片段，生活气息很浓。可以从“吃得好不好、看得美不美、玩得开心吗”这些轻松话题切入，让彼此更自然地聊起来。
-              </div>
+            <div class="summary-actions" style="margin-bottom: 8px;">
+              <button class="ghost-btn" id="preview-btn">一键预览全部</button>
+              <span class="soft-note">查看家庭共享空间照片</span>
             </div>
+            <div class="gravity-field" id="resonance-field"></div>
           </div>
         </div>
       </section>
@@ -1020,6 +1185,72 @@
         心语桥·影集
       </button>
     </nav>
+
+    <div class="modal-overlay" id="share-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="section-title">
+          <span>发送到家庭共鸣</span>
+          <button class="ghost-btn" id="share-close">关闭</button>
+        </div>
+        <div class="soft-note">选择想分享的照片（可多选）</div>
+        <div class="select-grid" id="share-grid">
+          <div class="select-item" data-image="personal_context/hack.jpg">
+            <img src="personal_context/hack.jpg" alt="拾光 A" />
+          </div>
+          <div class="select-item" data-image="personal_context/1769653727127_d.jpg">
+            <img src="personal_context/1769653727127_d.jpg" alt="拾光 B" />
+          </div>
+          <div class="select-item" data-image="personal_context/1769654339765_d.jpg">
+            <img src="personal_context/1769654339765_d.jpg" alt="拾光 C" />
+          </div>
+        </div>
+        <button class="ghost-btn" id="share-generate">生成这段时间的照片总结</button>
+        <div class="summary-card hidden" id="share-summary">
+          这段时间你记录了工作与小确幸，也有生活里的温暖瞬间。整体氛围轻松而有活力，适合分享给家人一起回味。
+        </div>
+        <label class="toggle-row">
+          <input type="checkbox" id="share-upload" checked />
+          上传到家庭共鸣区
+        </label>
+        <div class="cta-group">
+          <button class="cta" id="share-confirm">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="time-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="section-title">
+          <span>时光总结</span>
+          <button class="ghost-btn" id="time-close">关闭</button>
+        </div>
+        <div class="time-grid" id="time-grid"></div>
+        <div class="summary-card">
+          这些照片记录了家人近期的生活片段：一餐好饭、一次小庆祝、一天的忙碌与放松，串起了彼此的日常节奏。
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="preview-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="section-title">
+          <span>家庭共享照片</span>
+          <button class="ghost-btn" id="preview-close">关闭</button>
+        </div>
+        <div class="preview-grid" id="preview-grid"></div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="member-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="section-title">
+          <span id="member-title">家庭成员总结</span>
+          <button class="ghost-btn" id="member-close">关闭</button>
+        </div>
+        <div class="preview-grid" id="member-grid"></div>
+        <div class="summary-card" id="member-summary"></div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1039,15 +1270,24 @@
       });
     });
 
-    const topicSheet = document.getElementById("topic-sheet");
     const resonanceField = document.getElementById("resonance-field");
     const staticImages = [
+      "static/1769657827881_d.jpg",
+      "static/1769657875517_d.jpg",
+      "static/1769657794037_d.jpg",
+      "static/1769657776345_d.jpg",
+      "static/1769657749561_d.jpg",
+      "static/1769657502902_d.jpg",
+      "static/1769657480760_d.jpg",
+      "static/1769656877772_d.jpg",
+      "static/1769656851571_d.jpg",
+      "static/1769656829735_d.jpg",
       "static/1769654310825_d.jpg",
       "static/food.jpg",
       "static/mj.jpg",
       "static/sun.jpg",
       "static/yh.jpg",
-    ].slice(0, 7);
+    ];
 
     const positions = [
       { top: "14px", left: "18px" },
@@ -1076,10 +1316,165 @@
       resonanceField.appendChild(bubble);
     });
 
-    const summaryBtn = document.getElementById("summary-btn");
-    const summaryCard = document.getElementById("summary-card");
-    summaryBtn.addEventListener("click", () => {
-      summaryCard.classList.remove("hidden");
+    const timeModal = document.getElementById("time-modal");
+    const timeGrid = document.getElementById("time-grid");
+    const previewModal = document.getElementById("preview-modal");
+    const previewGrid = document.getElementById("preview-grid");
+    const memberModal = document.getElementById("member-modal");
+    const memberGrid = document.getElementById("member-grid");
+    const memberTitle = document.getElementById("member-title");
+    const memberSummary = document.getElementById("member-summary");
+
+    const renderResonanceBubbles = () => {
+      resonanceField.innerHTML = "";
+      staticImages.slice(0, 6).forEach((src, index) => {
+        const bubble = document.createElement("div");
+        bubble.className = "photo-bubble";
+        bubble.dataset.src = src;
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "家庭记忆";
+        const small = document.createElement("small");
+        small.textContent = labels[index % labels.length];
+        bubble.appendChild(img);
+        bubble.appendChild(small);
+        resonanceField.appendChild(bubble);
+      });
+    };
+
+    const openTimeSummary = (selectedSrc) => {
+      timeGrid.innerHTML = "";
+      const list = selectedSrc
+        ? [selectedSrc, ...staticImages.filter((src) => src !== selectedSrc)]
+        : [...staticImages];
+      list.slice(0, 5).forEach((src) => {
+        const item = document.createElement("div");
+        item.className = "select-item";
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "时光照片";
+        item.appendChild(img);
+        timeGrid.appendChild(item);
+      });
+      timeModal.classList.add("active");
+    };
+
+    renderResonanceBubbles();
+
+    resonanceField.addEventListener("click", (event) => {
+      const bubble = event.target.closest(".photo-bubble");
+      if (!bubble) return;
+      openTimeSummary(bubble.dataset.src);
+    });
+
+    document.getElementById("time-close").addEventListener("click", () => {
+      timeModal.classList.remove("active");
+    });
+
+    document.getElementById("preview-btn").addEventListener("click", () => {
+      previewGrid.innerHTML = "";
+      staticImages.forEach((src) => {
+        const item = document.createElement("div");
+        item.className = "select-item";
+        item.dataset.src = src;
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "家庭共享照片";
+        item.appendChild(img);
+        previewGrid.appendChild(item);
+      });
+      previewModal.classList.add("active");
+    });
+
+    document.getElementById("preview-close").addEventListener("click", () => {
+      previewModal.classList.remove("active");
+    });
+
+    previewGrid.addEventListener("click", (event) => {
+      const item = event.target.closest(".select-item");
+      if (!item) return;
+      previewModal.classList.remove("active");
+      openTimeSummary(item.dataset.src);
+    });
+
+    const sliceWithWrap = (start, count) => {
+      const result = [];
+      for (let i = 0; i < count; i += 1) {
+        result.push(staticImages[(start + i) % staticImages.length]);
+      }
+      return result;
+    };
+
+    const memberData = {
+      dad: {
+        label: "爸爸",
+        images: sliceWithWrap(0, 5),
+        summary: "爸爸最近十天记录多是日常与散步，画面朴实，节奏稳。",
+      },
+      mom: {
+        label: "妈妈",
+        images: sliceWithWrap(5, 5),
+        summary: "妈妈的照片多为生活片段与家常细节，氛围温暖。",
+      },
+      me: {
+        label: "我",
+        images: sliceWithWrap(10, 5),
+        summary: "我的记录里有工作与小确幸，更多是放松与陪伴。",
+      },
+    };
+
+    document.querySelectorAll(".member-view").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.member;
+        const data = memberData[key];
+        memberTitle.textContent = `${data.label} · 最近十天`;
+        memberSummary.textContent = data.summary;
+        memberGrid.innerHTML = "";
+        data.images.forEach((src) => {
+          const item = document.createElement("div");
+          item.className = "select-item";
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = `${data.label} 照片`;
+          item.appendChild(img);
+          memberGrid.appendChild(item);
+        });
+        memberModal.classList.add("active");
+      });
+    });
+
+    document.getElementById("member-close").addEventListener("click", () => {
+      memberModal.classList.remove("active");
+    });
+
+    const shareModal = document.getElementById("share-modal");
+    const shareBtn = document.querySelector(".share-pill");
+    const shareClose = document.getElementById("share-close");
+    const shareGrid = document.getElementById("share-grid");
+    const shareGenerate = document.getElementById("share-generate");
+    const shareSummary = document.getElementById("share-summary");
+    const shareConfirm = document.getElementById("share-confirm");
+
+    shareBtn.addEventListener("click", () => {
+      shareModal.classList.add("active");
+    });
+
+    shareClose.addEventListener("click", () => {
+      shareModal.classList.remove("active");
+    });
+
+    shareGrid.addEventListener("click", (event) => {
+      const item = event.target.closest(".select-item");
+      if (!item) return;
+      item.classList.toggle("selected");
+    });
+
+    shareGenerate.addEventListener("click", () => {
+      shareSummary.classList.remove("hidden");
+    });
+
+    shareConfirm.addEventListener("click", () => {
+      shareModal.classList.remove("active");
     });
 
     const bellBtn = document.getElementById("bell-btn");
