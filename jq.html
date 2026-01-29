@@ -514,6 +514,129 @@
       display: block;
     }
 
+    .care-chat-window {
+      height: 260px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding-right: 4px;
+    }
+
+    .care-chat-window .chat-bubble {
+      cursor: default;
+      max-width: 78%;
+      padding: 8px 10px;
+      font-size: 13px;
+      width: fit-content;
+    }
+
+    .care-chat-options {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .care-chat-option {
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .care-chat-option img {
+      width: 50px;
+      height: 60px;
+      border-radius: 50% 50% 46% 46%;
+      object-fit: cover;
+      box-shadow: 0 6px 16px rgba(60, 40, 32, 0.16);
+      border: 2px solid rgba(255, 202, 176, 0.9);
+      display: block;
+      animation: careFloat 4s ease-in-out infinite alternate;
+    }
+
+    .care-chat-option:nth-child(2) img {
+      animation-delay: 0.4s;
+    }
+
+    .care-chat-option:nth-child(3) img {
+      animation-delay: 0.8s;
+    }
+
+    .care-chat-option:nth-child(4) img {
+      animation-delay: 1.2s;
+    }
+
+    .care-chat-option span {
+      padding: 0;
+      font-size: 11px;
+      color: #7a6258;
+      text-align: center;
+      max-width: 80px;
+      line-height: 1.3;
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .care-chat-option span::before {
+      content: "";
+      position: absolute;
+      top: -36px;
+      left: 50%;
+      width: 68px;
+      height: 36px;
+      transform: translateX(-50%);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='36' viewBox='0 0 68 36'%3E%3Cpath d='M34 0 C26 8 18 18 16 34' stroke='rgba(184,132,104,0.95)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M34 0 C42 8 50 18 52 34' stroke='rgba(184,132,104,0.7)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 4px rgba(90, 60, 45, 0.12));
+      transition: opacity 0.25s ease;
+    }
+
+    .care-chat-option.launching {
+      pointer-events: none;
+    }
+
+    .care-chat-option.launching span,
+    .care-chat-option.launching span::before {
+      opacity: 0;
+    }
+
+    .care-chat-option.launching img {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .balloon-fly {
+      position: fixed;
+      width: 54px;
+      height: 64px;
+      border-radius: 50% 50% 46% 46%;
+      object-fit: cover;
+      box-shadow: 0 12px 26px rgba(62, 42, 33, 0.18);
+      border: 2px solid rgba(255, 202, 176, 0.95);
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .balloon-fly-line {
+      position: fixed;
+      width: 48px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 19;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='40' viewBox='0 0 48 40'%3E%3Cpath d='M24 0 C18 10 14 22 12 38' stroke='rgba(184,132,104,0.9)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M24 0 C30 10 34 22 36 38' stroke='rgba(184,132,104,0.6)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+      filter: drop-shadow(0 2px 4px rgba(90, 60, 45, 0.12));
+    }
+
     .notice {
       margin-top: 12px;
       padding: 12px 14px;
@@ -830,18 +953,22 @@
     }
 
     .member-thumb {
-      height: 42px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 197, 173, 0.45);
-      background: #fff;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 52px));
+      grid-auto-rows: 52px;
+      gap: 6px;
+      padding: 4px;
+      border-radius: 14px;
+      background: #ffe9e2;
     }
 
     .member-thumb img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      border-radius: 10px;
       display: block;
+      background: #ffe9e2;
     }
 
     .modal-overlay {
@@ -1010,6 +1137,29 @@
       }
     }
 
+    @keyframes careFloat {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes balloonLaunch {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-60px) scale(0.9);
+        opacity: 0;
+      }
+    }
+
     @media (max-width: 520px) {
       body {
         padding: 0;
@@ -1026,6 +1176,11 @@
       * {
         animation: none !important;
         transition: none !important;
+      }
+
+      .typewriter .char {
+        opacity: 1 !important;
+        transform: none !important;
       }
     }
   </style>
@@ -1053,51 +1208,45 @@
     </div>
 
     <main class="content">
-      <section class="screen active" id="screen-care">
-        <div class="card">
-          <div class="thermo">
-            <div>
-              <div style="font-weight: 600; color: #7a5d52; font-size: 14px;">情感温度计</div>
-              <div style="font-size: 12px; color: #9a7f74;">本周互动多，家里更暖</div>
-            </div>
-            <div class="thermo-bar" aria-label="家庭温度">
-              <div class="thermo-fill"></div>
-            </div>
-          </div>
-          <div class="soft-note">如果温度变淡，会温和提醒“去看看家话星期天吧”。</div>
-        </div>
-
+      <section class="screen" id="screen-care">
         <div class="card">
           <div class="section-title">
-            <span>健康关怀</span>
-            <span class="chip">健康小事记</span>
+            <span>随地聊</span>
           </div>
-          <div class="list">
-            <div class="list-item">
-              <div class="bubble">🦵</div>
-              <div>
-                <strong>爸爸 · 腿疼提到 1 次</strong>
-                <div style="font-size: 12px; color: #7a6258;">周三晚 · 轻度</div>
-              </div>
+          <div class="care-chat-window chat-card" id="care-chat-window">
+            <div class="chat-bubble">
+              <div class="from">家桥 · 提醒</div>
+              今天随便聊聊，不一定要有主题，只要有一句“你最近怎么样？”就很好。
             </div>
           </div>
-          <div class="notice">
-            <div class="notice-title">温和提醒</div>
-            爸爸周三提到腿疼，要不要问问？
+        </div>
+
+        <div class="card" style="margin-top: 14px;">
+          <div class="section-title">
+            <span>从哪儿开始聊？</span>
           </div>
-          <div class="care-script">
-            <div class="chip">关心话语</div>
-            <p>爸，你这两天腿还酸吗？我给你寄的护膝记得戴。</p>
-            <div class="cta-group">
-              <button class="cta">一键发送</button>
-              <button class="ghost-btn">AI 生成话语</button>
-              <button class="ghost-btn">自己编辑</button>
-            </div>
+          <div class="care-chat-options">
+            <button class="care-chat-option" data-key="开心">
+              <img src="jst/开心.jpeg" alt="开心" />
+              <span>最近的一件开心小事</span>
+            </button>
+            <button class="care-chat-option" data-key="火锅">
+              <img src="jst/火锅.jpg" alt="火锅" />
+              <span>老北京铜锅涮肉</span>
+            </button>
+            <button class="care-chat-option" data-key="电影">
+              <img src="jst/电影.jpg" alt="电影" />
+              <span>电影真好看</span>
+            </button>
+            <button class="care-chat-option" data-key="雪">
+              <img src="jst/雪.jpeg" alt="雪" />
+              <span>下雪天的一段记录</span>
+            </button>
           </div>
         </div>
       </section>
 
-      <section class="screen" id="screen-story">
+      <section class="screen active" id="screen-story">
         <div class="bell-widget">
           <button class="bell-btn" id="bell-btn" aria-label="平安打卡">🔔</button>
           <div class="bell-panel" id="bell-panel">
@@ -1144,21 +1293,27 @@
               <div class="member-row">
                 <div class="member-avatar">爸</div>
                 <div class="member-thumb">
-                  <img src="static/1769654310825_d.jpg" alt="爸爸的照片" />
+                  <img src="static/1769654310825_d.jpg" alt="爸爸的照片 1" />
+                  <img src="static/1769656829735_d.jpg" alt="爸爸的照片 2" />
+                  <img src="static/1769656851571_d.jpg" alt="爸爸的照片 3" />
                 </div>
                 <button class="ghost-btn member-view" data-member="dad">查看</button>
               </div>
               <div class="member-row">
                 <div class="member-avatar">妈</div>
                 <div class="member-thumb">
-                  <img src="static/1769657502902_d.jpg" alt="妈妈的照片" />
+                  <img src="static/1769657502902_d.jpg" alt="妈妈的照片 1" />
+                  <img src="static/1769657749561_d.jpg" alt="妈妈的照片 2" />
+                  <img src="static/1769657776345_d.jpg" alt="妈妈的照片 3" />
                 </div>
                 <button class="ghost-btn member-view" data-member="mom">查看</button>
               </div>
               <div class="member-row">
                 <div class="member-avatar">我</div>
                 <div class="member-thumb">
-                  <img src="static/1769657875517_d.jpg" alt="我的照片" />
+                  <img src="static/1769657875517_d.jpg" alt="我的照片 1" />
+                  <img src="static/1769658191713_d.jpg" alt="我的照片 2" />
+                  <img src="static/1769658200937_d.jpg" alt="我的照片 3" />
                 </div>
                 <button class="ghost-btn member-view" data-member="me">查看</button>
               </div>
@@ -1180,21 +1335,17 @@
       </section>
     </main>
 
-    <div class="fab-stack active" data-screen="care" aria-label="关怀快捷操作">
-      <button class="fab">🎤 语音上传</button>
-    </div>
-    <div class="fab-stack" data-screen="story" aria-label="心语桥影集快捷操作">
-      <button class="fab">📸 随手拍</button>
-    </div>
+    <div class="fab-stack active" data-screen="story" aria-label="心语桥影集快捷操作"></div>
+    <div class="fab-stack" data-screen="care" aria-label="随地聊快捷操作"></div>
 
     <nav class="bottom-nav" aria-label="底部导航">
-      <button class="nav-btn active" data-target="care">
-        <div class="nav-dot">🩺</div>
-        关怀
-      </button>
-      <button class="nav-btn" data-target="story">
+      <button class="nav-btn active" data-target="story">
         <div class="nav-dot">✨</div>
         心语桥·影集
+      </button>
+      <button class="nav-btn" data-target="care">
+        <div class="nav-dot">💬</div>
+        随地聊
       </button>
     </nav>
 
@@ -1278,6 +1429,96 @@
         document.querySelectorAll(".fab-stack").forEach((fab) => {
           fab.classList.toggle("active", fab.dataset.screen === target);
         });
+      });
+    });
+
+    const careNotes = {
+      开心: "听你这么说，我就放心了，在外面过得开心就好。",
+      火锅: "你们晚上吃火锅啊？下雪天吃这个最舒服了。",
+      电影: "吃完火锅还去看电影了？安排得挺丰富啊。",
+      雪: "北京下雪啦？还拍了其他照片吗？我一看到你说窗外全白了，就觉得肯定特别好看。",
+    };
+
+    const careChatWindow = document.getElementById("care-chat-window");
+
+    const appendCareMessage = (text) => {
+      if (!careChatWindow) return;
+      const clean = (text || "").replace(/\n\s*\n+/g, "\n").trim();
+      if (!clean) return;
+
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble";
+
+      const from = document.createElement("div");
+      from.className = "from";
+      from.textContent = "妈";
+
+      const body = document.createElement("div");
+      body.textContent = clean;
+
+      bubble.appendChild(from);
+      bubble.appendChild(body);
+      careChatWindow.appendChild(bubble);
+      careChatWindow.scrollTop = careChatWindow.scrollHeight;
+    };
+
+    document.querySelectorAll(".care-chat-option").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.key;
+        const text = careNotes[key];
+        if (!text) return;
+        if (btn.classList.contains("launching")) return;
+        btn.classList.add("launching");
+
+        const img = btn.querySelector("img");
+        const rect = img.getBoundingClientRect();
+        const fly = document.createElement("img");
+        fly.src = img.src;
+        fly.alt = img.alt;
+        fly.className = "balloon-fly";
+        fly.style.left = `${rect.left}px`;
+        fly.style.top = `${rect.top}px`;
+        document.body.appendChild(fly);
+
+        const targetRect = careChatWindow.getBoundingClientRect();
+        const targetX = targetRect.left + Math.min(90, targetRect.width - 70);
+        const targetY = targetRect.top + 26;
+
+        const flyLine = document.createElement("div");
+        flyLine.className = "balloon-fly-line";
+        flyLine.style.left = `${rect.left + rect.width / 2 - 24}px`;
+        flyLine.style.top = `${rect.top + rect.height - 6}px`;
+        document.body.appendChild(flyLine);
+
+        const dx = targetX - rect.left;
+        const dy = targetY - rect.top;
+        const midX = dx * 0.55 + (dx > 0 ? -18 : 18);
+        const midY = dy * 0.5 - 28;
+
+        fly.animate(
+          [
+            { transform: "translate(0px, 0px) scale(1)", opacity: 1 },
+            { transform: `translate(${midX}px, ${midY}px) scale(0.96)`, opacity: 0.98 },
+            { transform: `translate(${dx}px, ${dy}px) scale(0.86)`, opacity: 0 },
+          ],
+          { duration: 900, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
+        );
+
+        flyLine.animate(
+          [
+            { transform: "translate(0px, 0px)", opacity: 1 },
+            { transform: `translate(${midX}px, ${midY + 12}px)`, opacity: 0.85 },
+            { transform: `translate(${dx}px, ${dy + 18}px)`, opacity: 0 },
+          ],
+          { duration: 850, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
+        );
+
+        setTimeout(() => {
+          fly.remove();
+          flyLine.remove();
+          appendCareMessage(text);
+          btn.remove();
+        }, 900);
       });
     });
 
