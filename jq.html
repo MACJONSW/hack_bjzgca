@@ -540,6 +540,10 @@
       flex-wrap: wrap;
     }
 
+    .care-chat-options.hidden {
+      display: none;
+    }
+
     .care-chat-option {
       border: none;
       padding: 0;
@@ -982,6 +986,128 @@
       z-index: 10;
     }
 
+    .camera-modal .modal-card {
+      width: min(380px, 92vw);
+      background: #fff;
+    }
+
+    .camera-viewfinder {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      background: #000;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .camera-viewfinder img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    .camera-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .camera-grid {
+      position: absolute;
+      inset: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: inset 0 0 0 999px rgba(0, 0, 0, 0.12);
+    }
+
+    .camera-grid::before,
+    .camera-grid::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+      background-size: 33.33% 100%, 100% 33.33%;
+      background-position: 33.33% 0, 0 33.33%;
+      border-radius: 16px;
+    }
+
+    .camera-corners {
+      position: absolute;
+      inset: 18px;
+      border-radius: 14px;
+    }
+
+    .camera-corners::before,
+    .camera-corners::after {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .camera-corners::before {
+      top: 0;
+      left: 0;
+      border-right: none;
+      border-bottom: none;
+      border-top-left-radius: 8px;
+    }
+
+    .camera-corners::after {
+      bottom: 0;
+      right: 0;
+      border-left: none;
+      border-top: none;
+      border-bottom-right-radius: 8px;
+    }
+
+    .camera-corners span {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .camera-corners span:first-child {
+      top: 0;
+      right: 0;
+      border-left: none;
+      border-bottom: none;
+      border-top-right-radius: 8px;
+    }
+
+    .camera-corners span:last-child {
+      bottom: 0;
+      left: 0;
+      border-right: none;
+      border-top: none;
+      border-bottom-left-radius: 8px;
+    }
+
+    .camera-status {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    }
+
+    .camera-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
     .modal-overlay.active {
       display: flex;
     }
@@ -1225,7 +1351,8 @@
           <div class="section-title">
             <span>从哪儿开始聊？</span>
           </div>
-          <div class="care-chat-options">
+          <button class="ghost-btn" id="care-start">看看家庭成员都在干什么</button>
+          <div class="care-chat-options" id="care-chat-options">
             <button class="care-chat-option" data-key="开心">
               <img src="jst/开心.jpeg" alt="开心" />
               <span>最近的一件开心小事</span>
@@ -1264,9 +1391,10 @@
             </div>
             <div class="soft-note">随手拍记录开心时刻，弱化“上传”感。</div>
             <div class="camera-actions">
+              <button class="ghost-btn" id="quick-capture">📸 随手拍</button>
               <button class="share-pill">🫶 发送到家庭共鸣</button>
             </div>
-            <div class="personal-grid">
+            <div class="personal-grid" id="personal-grid">
               <div class="personal-photo">
                 <img src="personal_context/hack.jpg" alt="拾光 1" />
               </div>
@@ -1413,6 +1541,33 @@
         <div class="summary-card" id="member-summary"></div>
       </div>
     </div>
+
+    <div class="modal-overlay camera-modal" id="camera-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="section-title">
+          <span>随手拍</span>
+          <button class="ghost-btn" id="camera-close">关闭</button>
+        </div>
+        <div class="camera-viewfinder">
+          <img src="jst/1769663029414_d.jpg" alt="取景画面" />
+          <div class="camera-overlay">
+            <div class="camera-status">
+              <span>HDR 自动</span>
+              <span>1.0x</span>
+            </div>
+            <div class="camera-grid"></div>
+            <div class="camera-corners">
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+        <div class="camera-actions">
+          <button class="ghost-btn" id="camera-cancel">取消</button>
+          <button class="cta">拍摄</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1433,7 +1588,7 @@
     });
 
     const careNotes = {
-      开心: "听你这么说，我就放心了，在外面过得开心就好。",
+      开心: "注意身体啊妈妈，听你说最近心情不错我也很开心！",
       火锅: "你们晚上吃火锅啊？下雪天吃这个最舒服了。",
       电影: "吃完火锅还去看电影了？安排得挺丰富啊。",
       雪: "北京下雪啦？还拍了其他照片吗？我一看到你说窗外全白了，就觉得肯定特别好看。",
@@ -1451,7 +1606,7 @@
 
       const from = document.createElement("div");
       from.className = "from";
-      from.textContent = "妈";
+      from.textContent = "我";
 
       const body = document.createElement("div");
       body.textContent = clean;
@@ -1717,10 +1872,52 @@
       memberModal.classList.remove("active");
     });
 
+    const cameraModal = document.getElementById("camera-modal");
+    const cameraOpen = document.getElementById("quick-capture");
+    const cameraClose = document.getElementById("camera-close");
+    const cameraShoot = document.querySelector("#camera-modal .cta");
+    const cameraCancel = document.getElementById("camera-cancel");
+    const personalGrid = document.getElementById("personal-grid");
+    const shareGrid = document.getElementById("share-grid");
+    const careStart = document.getElementById("care-start");
+    const careOptions = document.getElementById("care-chat-options");
+    cameraOpen.addEventListener("click", () => {
+      cameraModal.classList.add("active");
+    });
+
+    cameraClose.addEventListener("click", () => {
+      cameraModal.classList.remove("active");
+    });
+
+    cameraCancel.addEventListener("click", () => {
+      cameraModal.classList.remove("active");
+    });
+
+    cameraShoot.addEventListener("click", () => {
+      const newPhoto = "jst/1769663029414_d.jpg";
+      if (!document.querySelector(`.select-item[data-image="${newPhoto}"]`)) {
+        const shareItem = document.createElement("div");
+        shareItem.className = "select-item selected";
+        shareItem.dataset.image = newPhoto;
+        const shareImg = document.createElement("img");
+        shareImg.src = newPhoto;
+        shareImg.alt = "拾光 新照片";
+        shareItem.appendChild(shareImg);
+        shareGrid.prepend(shareItem);
+      }
+      const item = document.createElement("div");
+      item.className = "personal-photo";
+      const img = document.createElement("img");
+      img.src = newPhoto;
+      img.alt = "拾光 新照片";
+      item.appendChild(img);
+      personalGrid.prepend(item);
+      cameraModal.classList.remove("active");
+    });
+
     const shareModal = document.getElementById("share-modal");
     const shareBtn = document.querySelector(".share-pill");
     const shareClose = document.getElementById("share-close");
-    const shareGrid = document.getElementById("share-grid");
     const shareSummary = document.getElementById("share-summary");
     const shareConfirm = document.getElementById("share-confirm");
 
@@ -1751,7 +1948,22 @@
     });
 
     shareConfirm.addEventListener("click", () => {
+      const selected = Array.from(shareGrid.querySelectorAll(".select-item.selected"))
+        .map((item) => item.dataset.image)
+        .filter(Boolean);
+      selected.forEach((src) => {
+        if (!staticImages.includes(src)) {
+          staticImages.unshift(src);
+        }
+      });
+      renderResonanceBubbles();
       shareModal.classList.remove("active");
+    });
+
+    careOptions.classList.add("hidden");
+    careStart.addEventListener("click", () => {
+      careOptions.classList.remove("hidden");
+      careStart.remove();
     });
 
     const bellBtn = document.getElementById("bell-btn");

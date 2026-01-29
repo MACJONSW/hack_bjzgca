@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>家桥 · 温馨宣传海报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #fff4ea;
+      --sunset: #ffb38a;
+      --rose: #ff8f7c;
+      --berry: #e05b68;
+      --cocoa: #3f2b22;
+      --ink: #2a1f1b;
+      --mist: rgba(255, 255, 255, 0.72);
+      --card: rgba(255, 255, 255, 0.88);
+      --shadow: 0 30px 60px rgba(62, 42, 33, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 10%, #fff0e6, #fff7f1 45%, #fffaf6 70%),
+        linear-gradient(135deg, #fff6ed 0%, #fffdf9 100%);
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 200, 173, 0.35) 1px, transparent 1px),
+        radial-gradient(rgba(255, 230, 214, 0.6) 1px, transparent 1px);
+      background-size: 28px 28px, 44px 44px;
+      background-position: 0 0, 16px 16px;
+      pointer-events: none;
+    }
+
+    .poster {
+      width: min(420px, 92vw);
+      aspect-ratio: 9 / 16;
+      background: var(--card);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 195, 170, 0.7);
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 18px;
+    }
+
+    .poster::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -80px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 182, 148, 0.5), transparent 60%);
+      filter: blur(0.5px);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 26px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--sunset), var(--rose));
+      box-shadow: 0 16px 32px rgba(255, 154, 124, 0.35);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 32px;
+      color: var(--cocoa);
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a18477;
+    }
+
+    .tagline {
+      max-width: 180px;
+      font-size: 14px;
+      color: #7a5d52;
+      line-height: 1.6;
+      background: var(--mist);
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 190, 164, 0.5);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hero-text h2 {
+      font-size: 28px;
+      margin: 0 0 12px;
+      color: var(--cocoa);
+    }
+
+    .hero-text h2 span {
+      color: var(--berry);
+    }
+
+    .hero-text p {
+      margin: 0 0 18px;
+      line-height: 1.75;
+      color: #6f5750;
+    }
+
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 186, 156, 0.2);
+      border: 1px solid rgba(255, 160, 124, 0.4);
+      font-size: 12px;
+      color: #a35f4a;
+    }
+
+    .mock {
+      background: #fff;
+      border-radius: 28px;
+      padding: 18px;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      box-shadow: 0 18px 36px rgba(62, 42, 33, 0.12);
+      position: relative;
+    }
+
+    .mock::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 22px;
+      border: 1px dashed rgba(255, 170, 138, 0.6);
+      pointer-events: none;
+    }
+
+    .mock-title {
+      font-weight: 600;
+      color: #7a5d52;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .mock-bubble {
+      background: #fff4ec;
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #7a5d52;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 196, 170, 0.6);
+    }
+
+    .mock-note {
+      font-size: 12px;
+      color: #9a7f74;
+    }
+
+    .photo-stack {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .photo-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 8px;
+      border: 1px solid rgba(255, 197, 173, 0.45);
+      box-shadow: 0 10px 22px rgba(62, 42, 33, 0.1);
+      display: grid;
+      gap: 6px;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 90px;
+      border-radius: 14px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card span {
+      font-size: 11px;
+      color: #a06f60;
+      text-align: center;
+    }
+
+    .album-strip {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .album-strip img {
+      width: 100%;
+      height: 60px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 197, 173, 0.4);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .feature-scroll {
+      display: grid;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid rgba(255, 197, 173, 0.45);
+      box-shadow: 0 12px 24px rgba(62, 42, 33, 0.08);
+      display: grid;
+      gap: 8px;
+    }
+
+    .feature-card h4 {
+      margin: 0;
+      font-size: 15px;
+      color: #7a5d52;
+    }
+
+    .feature-card p {
+      margin: 0;
+      font-size: 12px;
+      color: #7a5d52;
+      line-height: 1.6;
+    }
+
+    .feature-media {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .feature-media img {
+      width: 100%;
+      height: 72px;
+      border-radius: 14px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 197, 173, 0.4);
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cta {
+      padding: 12px 18px;
+      border-radius: 16px;
+      border: none;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--sunset), var(--rose));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(255, 150, 120, 0.35);
+      cursor: pointer;
+    }
+
+    .qr {
+      display: grid;
+      gap: 8px;
+      text-align: right;
+      font-size: 12px;
+      color: #a08378;
+    }
+
+    .qr-box {
+      width: 72px;
+      height: 72px;
+      border-radius: 14px;
+      background: repeating-linear-gradient(45deg, #f9ded1 0 8px, #fff4ee 8px 16px);
+      border: 1px solid rgba(255, 190, 164, 0.6);
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      color: #c07a60;
+    }
+
+    @media (max-width: 480px) {
+      .poster {
+        width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      .photo-stack {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .album-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .qr {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="poster" role="img" aria-label="家桥 9:16 温馨宣传海报">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">家</div>
+        <div>
+          <h1>家桥</h1>
+          <p>HearthBridge</p>
+        </div>
+      </div>
+      <div class="tagline">让随手拍、家庭共鸣、随地聊变成同一条温暖路径。</div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-text">
+        <h2>心语桥 · 影集<span> 与随地聊</span></h2>
+        <p>个人拾光区记录日常，轻触分享进入家庭共鸣空间；点击气球关键词就能自然开启对话。家桥把生活与沟通连成一条温暖的桥。</p>
+        <div class="pill-group">
+          <div class="pill">个人拾光区</div>
+          <div class="pill">家庭共鸣空间</div>
+          <div class="pill">家庭成员总结</div>
+          <div class="pill">随地聊气球</div>
+          <div class="pill">平安铃铛</div>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-title">今日家桥画面</div>
+        <div class="mock-bubble">“我 11:03 · 已报平安”，妈妈上传的照片进入家庭共鸣空间。</div>
+        <div class="mock-bubble">点击气球关键词，聊天框自动生成一句暖心对话。</div>
+        <div class="mock-note">一键预览家庭照片，查看时光总结。</div>
+        <div class="album-strip">
+          <img src="static/1769654310825_d.jpg" alt="家庭照片 1" />
+          <img src="static/1769657502902_d.jpg" alt="家庭照片 2" />
+          <img src="static/1769657875517_d.jpg" alt="家庭照片 3" />
+          <img src="static/food.jpg" alt="家庭照片 4" />
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-stack" aria-label="随地聊与拾光示意">
+      <div class="photo-card">
+        <img src="jst/开心.jpeg" alt="随地聊关键词 开心" />
+        <span>随地聊 · 开心小事</span>
+      </div>
+      <div class="photo-card">
+        <img src="jst/火锅.jpg" alt="随地聊关键词 火锅" />
+        <span>随地聊 · 火锅时刻</span>
+      </div>
+      <div class="photo-card">
+        <img src="jst/电影.jpg" alt="随地聊关键词 电影" />
+        <span>随地聊 · 电影分享</span>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-scroll">
+      <div class="feature-card">
+        <h4>个人拾光区</h4>
+        <p>随手拍记录开心时刻，自动生成个人总结，支持一键分享。</p>
+        <div class="feature-media">
+          <img src="personal_context/hack.jpg" alt="个人拾光 1" />
+          <img src="personal_context/1769653727127_d.jpg" alt="个人拾光 2" />
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>家庭共鸣空间</h4>
+        <p>家庭共享照片以气泡呈现，一键预览全部并查看时光总结。</p>
+        <div class="feature-media">
+          <img src="static/1769657776345_d.jpg" alt="家庭共鸣 1" />
+          <img src="static/1769657794037_d.jpg" alt="家庭共鸣 2" />
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>家庭成员总结</h4>
+        <p>爸爸、妈妈、我的最近十天照片与总结，点击即可查看。</p>
+        <div class="feature-media">
+          <img src="static/1769656851571_d.jpg" alt="成员总结 1" />
+          <img src="static/1769657827881_d.jpg" alt="成员总结 2" />
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>随地聊气球</h4>
+        <p>气球关键词连接聊天窗口，点击即生成对话，沟通更自然。</p>
+        <div class="feature-media">
+          <img src="jst/雪.jpeg" alt="随地聊 雪" />
+          <img src="jst/开心.jpeg" alt="随地聊 开心" />
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>平安铃铛</h4>
+        <p>轻触报平安，面板展示家庭状态，安心不打扰。</p>
+        <div class="feature-media">
+          <img src="static/sun.jpg" alt="平安提示 1" />
+          <img src="static/yh.jpg" alt="平安提示 2" />
+        </div>
+      </div>
+      <div class="feature-card">
+        <h4>心语桥·影集</h4>
+        <p>在同一页面聚合故事与影像，让记忆和沟通并行。</p>
+        <div class="feature-media">
+          <img src="static/mj.jpg" alt="影集 1" />
+          <img src="static/1769658191713_d.jpg" alt="影集 2" />
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <button class="cta">立即开启家桥体验</button>
+      <div class="qr">
+        <div class="qr-box">扫码体验</div>
+        <div>扫码查看 Demo / 预约体验</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
