@@ -37,7 +37,7 @@
       place-items: center;
       padding: 24px;
       position: relative;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     body::before {
@@ -149,6 +149,19 @@
       padding: 18px 18px 110px;
       display: block;
       position: relative;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: rgba(198, 150, 123, 0.35);
+      border-radius: 999px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
     }
 
     .screen {
@@ -522,6 +535,15 @@
       align-items: flex-start;
       gap: 8px;
       padding-right: 4px;
+    }
+
+    .care-chat-window::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .care-chat-window::-webkit-scrollbar-thumb {
+      background: rgba(198, 150, 123, 0.35);
+      border-radius: 999px;
     }
 
     .care-chat-window .chat-bubble {
@@ -1357,24 +1379,7 @@
             <span>从哪儿开始聊？</span>
           </div>
           <button class="ghost-btn care-start" id="care-start">看看家庭成员都在干什么</button>
-          <div class="care-chat-options" id="care-chat-options">
-            <button class="care-chat-option" data-key="开心">
-              <img src="jst/开心.jpeg" alt="开心" />
-              <span>最近的一件开心小事</span>
-            </button>
-            <button class="care-chat-option" data-key="火锅">
-              <img src="jst/火锅.jpg" alt="火锅" />
-              <span>老北京铜锅涮肉</span>
-            </button>
-            <button class="care-chat-option" data-key="电影">
-              <img src="jst/电影.jpg" alt="电影" />
-              <span>电影真好看</span>
-            </button>
-            <button class="care-chat-option" data-key="雪">
-              <img src="jst/雪.jpeg" alt="雪" />
-              <span>下雪天的一段记录</span>
-            </button>
-          </div>
+          <div class="care-chat-options" id="care-chat-options"></div>
         </div>
         <div class="card" style="margin-top: 14px;">
           <div class="section-title">
@@ -1529,7 +1534,7 @@
           <button class="ghost-btn" id="time-close">关闭</button>
         </div>
         <div class="time-grid" id="time-grid"></div>
-        <div class="summary-card">
+        <div class="summary-card" id="time-summary">
           这些照片记录了家人近期的生活片段：一餐好饭、一次小庆祝、一天的忙碌与放松，串起了彼此的日常节奏。
         </div>
       </div>
@@ -1585,6 +1590,7 @@
   </div>
 
   <script>
+    const API_BASE = "http://localhost:8000";
     const buttons = document.querySelectorAll(".nav-btn");
     const screens = document.querySelectorAll(".screen");
 
@@ -1601,12 +1607,22 @@
       });
     });
 
-    const careNotes = {
-      开心: "注意身体啊妈妈，听你说最近心情不错我也很开心！",
-      火锅: "你们晚上吃火锅啊？下雪天吃这个最舒服了。",
-      电影: "吃完火锅还去看电影了？安排得挺丰富啊。",
-      雪: "北京下雪啦？还拍了其他照片吗？我一看到你说窗外全白了，就觉得肯定特别好看。",
-    };
+    const SYSTEM_CONTEXT = [
+      "你是“家桥”App的家庭沟通助理。",
+      "场景是中国式亲情表达：含蓄、温暖、轻打扰。",
+      "目标是帮助子女与父母建立理解，减少误会，语言要温柔、自然、真诚。",
+      "如果未指定角色，默认以“我”的视角措辞。",
+    ].join("\n");
+
+    const careBalloonImages = ["jst/开心.jpeg", "jst/火锅.jpg", "jst/电影.jpg", "jst/雪.jpeg"];
+    const fallbackTopics = [
+      { title: "最近的一件开心小事", message: "注意身体啊妈妈，听你说最近心情不错我也很开心！" },
+      { title: "老北京铜锅涮肉", message: "你们晚上吃火锅啊？下雪天吃这个最舒服了。" },
+      { title: "电影真好看", message: "吃完火锅还去看电影了？安排得挺丰富啊。" },
+      { title: "下雪天的一段记录", message: "北京下雪啦？还拍了其他照片吗？我一看到你说窗外全白了，就觉得肯定特别好看。" },
+    ];
+
+    const careNotes = {};
 
     const careChatWindow = document.getElementById("care-chat-window");
     const careInput = document.getElementById("care-input");
@@ -1634,65 +1650,87 @@
       careChatWindow.scrollTop = careChatWindow.scrollHeight;
     };
 
-    document.querySelectorAll(".care-chat-option").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const key = btn.dataset.key;
-        const text = careNotes[key];
-        if (!text) return;
-        if (btn.classList.contains("launching")) return;
-        btn.classList.add("launching");
+    const renderCareOptions = (topics) => {
+      careOptions.innerHTML = "";
+      topics.forEach((topic, index) => {
+        const btn = document.createElement("button");
+        btn.className = "care-chat-option";
+        btn.dataset.key = `${index}`;
 
-        const img = btn.querySelector("img");
-        const rect = img.getBoundingClientRect();
-        const fly = document.createElement("img");
-        fly.src = img.src;
-        fly.alt = img.alt;
-        fly.className = "balloon-fly";
-        fly.style.left = `${rect.left}px`;
-        fly.style.top = `${rect.top}px`;
-        document.body.appendChild(fly);
+        const img = document.createElement("img");
+        img.src = careBalloonImages[index % careBalloonImages.length];
+        img.alt = topic.title || "话题";
 
-        const targetRect = careChatWindow.getBoundingClientRect();
-        const targetX = targetRect.left + Math.min(90, targetRect.width - 70);
-        const targetY = targetRect.top + 26;
+        const span = document.createElement("span");
+        span.textContent = topic.title || "聊聊最近";
 
-        const flyLine = document.createElement("div");
-        flyLine.className = "balloon-fly-line";
-        flyLine.style.left = `${rect.left + rect.width / 2 - 24}px`;
-        flyLine.style.top = `${rect.top + rect.height - 6}px`;
-        document.body.appendChild(flyLine);
-
-        const dx = targetX - rect.left;
-        const dy = targetY - rect.top;
-        const midX = dx * 0.55 + (dx > 0 ? -18 : 18);
-        const midY = dy * 0.5 - 28;
-
-        fly.animate(
-          [
-            { transform: "translate(0px, 0px) scale(1)", opacity: 1 },
-            { transform: `translate(${midX}px, ${midY}px) scale(0.96)`, opacity: 0.98 },
-            { transform: `translate(${dx}px, ${dy}px) scale(0.86)`, opacity: 0 },
-          ],
-          { duration: 900, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
-        );
-
-        flyLine.animate(
-          [
-            { transform: "translate(0px, 0px)", opacity: 1 },
-            { transform: `translate(${midX}px, ${midY + 12}px)`, opacity: 0.85 },
-            { transform: `translate(${dx}px, ${dy + 18}px)`, opacity: 0 },
-          ],
-          { duration: 850, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
-        );
-
-        setTimeout(() => {
-          fly.remove();
-          flyLine.remove();
-          appendCareMessage(text);
-          btn.remove();
-        }, 900);
+        btn.appendChild(img);
+        btn.appendChild(span);
+        careOptions.appendChild(btn);
       });
-    });
+    };
+
+    const attachCareOptionEvents = () => {
+      careOptions.querySelectorAll(".care-chat-option").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.key;
+          const text = careNotes[key];
+          if (!text) return;
+          if (btn.classList.contains("launching")) return;
+          btn.classList.add("launching");
+
+          const img = btn.querySelector("img");
+          const rect = img.getBoundingClientRect();
+          const fly = document.createElement("img");
+          fly.src = img.src;
+          fly.alt = img.alt;
+          fly.className = "balloon-fly";
+          fly.style.left = `${rect.left}px`;
+          fly.style.top = `${rect.top}px`;
+          document.body.appendChild(fly);
+
+          const targetRect = careChatWindow.getBoundingClientRect();
+          const targetX = targetRect.left + Math.min(90, targetRect.width - 70);
+          const targetY = targetRect.top + 26;
+
+          const flyLine = document.createElement("div");
+          flyLine.className = "balloon-fly-line";
+          flyLine.style.left = `${rect.left + rect.width / 2 - 24}px`;
+          flyLine.style.top = `${rect.top + rect.height - 6}px`;
+          document.body.appendChild(flyLine);
+
+          const dx = targetX - rect.left;
+          const dy = targetY - rect.top;
+          const midX = dx * 0.55 + (dx > 0 ? -18 : 18);
+          const midY = dy * 0.5 - 28;
+
+          fly.animate(
+            [
+              { transform: "translate(0px, 0px) scale(1)", opacity: 1 },
+              { transform: `translate(${midX}px, ${midY}px) scale(0.96)`, opacity: 0.98 },
+              { transform: `translate(${dx}px, ${dy}px) scale(0.86)`, opacity: 0 },
+            ],
+            { duration: 900, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
+          );
+
+          flyLine.animate(
+            [
+              { transform: "translate(0px, 0px)", opacity: 1 },
+              { transform: `translate(${midX}px, ${midY + 12}px)`, opacity: 0.85 },
+              { transform: `translate(${dx}px, ${dy + 18}px)`, opacity: 0 },
+            ],
+            { duration: 850, easing: "cubic-bezier(0.22, 0.61, 0.36, 1)", fill: "forwards" }
+          );
+
+          setTimeout(() => {
+            fly.remove();
+            flyLine.remove();
+            appendCareMessage(text);
+            btn.remove();
+          }, 900);
+        });
+      });
+    };
 
     const sendCareInput = () => {
       if (!careInput) return;
@@ -1769,6 +1807,7 @@
 
     const timeModal = document.getElementById("time-modal");
     const timeGrid = document.getElementById("time-grid");
+    const timeSummary = document.getElementById("time-summary");
     const previewModal = document.getElementById("preview-modal");
     const previewGrid = document.getElementById("preview-grid");
     const memberModal = document.getElementById("member-modal");
@@ -1793,7 +1832,7 @@
       });
     };
 
-    const openTimeSummary = (selectedSrc) => {
+    const openTimeSummary = async (selectedSrc) => {
       timeGrid.innerHTML = "";
       const list = selectedSrc
         ? [selectedSrc, ...staticImages.filter((src) => src !== selectedSrc)]
@@ -1807,6 +1846,11 @@
         item.appendChild(img);
         timeGrid.appendChild(item);
       });
+      if (timeSummary) {
+        timeSummary.textContent = "AI 总结生成中...";
+      const summary = await generateAiSummary(list.slice(0, 5), "家庭共鸣空间的照片");
+        timeSummary.textContent = summary || "AI 总结暂不可用";
+      }
       timeModal.classList.add("active");
     };
 
@@ -1897,7 +1941,7 @@
         const key = btn.dataset.member;
         const data = memberData[key];
         memberTitle.textContent = `${data.label} · 最近十天`;
-        memberSummary.textContent = data.summary;
+        memberSummary.textContent = "AI 总结生成中...";
         memberGrid.innerHTML = "";
         data.images.forEach((src) => {
           const item = document.createElement("div");
@@ -1907,6 +1951,9 @@
           img.alt = `${data.label} 照片`;
           item.appendChild(img);
           memberGrid.appendChild(item);
+        });
+        generateAiSummary(data.images, `${data.label}上传的照片`).then((summary) => {
+          memberSummary.textContent = summary || data.summary;
         });
         memberModal.classList.add("active");
       });
@@ -1979,6 +2026,7 @@
 
     shareBtn.addEventListener("click", () => {
       shareModal.classList.add("active");
+      updateShareSummary();
     });
 
     shareClose.addEventListener("click", () => {
@@ -1989,6 +2037,7 @@
       const item = event.target.closest(".select-item");
       if (!item) return;
       item.classList.toggle("selected");
+      updateShareSummary();
     });
 
     shareConfirm.addEventListener("click", () => {
@@ -2004,11 +2053,106 @@
       shareModal.classList.remove("active");
     });
 
+    const generateCareTopics = async () => {
+      const prompt = [
+        "生成 4 个“从哪儿开始聊”的话题，面向家庭沟通。",
+        "请输出 JSON 数组，每项包含 title 和 message 字段。",
+        "message 用“我”的视角，语气温柔、自然、具体，不超过 28 字。",
+      ].join("\n");
+      try {
+        const output = await callVisionApi(prompt, []);
+        const data = JSON.parse(output);
+        if (Array.isArray(data) && data.length) {
+          return data.slice(0, 4);
+        }
+      } catch (error) {
+        return [];
+      }
+      return [];
+    };
+
     careOptions.classList.add("hidden");
-    careStart.addEventListener("click", () => {
+    careStart.addEventListener("click", async () => {
       careOptions.classList.remove("hidden");
       careStart.remove();
+      const topics = await generateCareTopics();
+      const finalTopics = topics.length ? topics : fallbackTopics;
+      finalTopics.forEach((item, index) => {
+        careNotes[String(index)] = item.message || fallbackTopics[index].message;
+      });
+      renderCareOptions(finalTopics);
+      attachCareOptionEvents();
     });
+
+    const toDataUrl = (url) =>
+      new Promise((resolve, reject) => {
+        fetch(url)
+          .then((res) => res.blob())
+          .then((blob) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          })
+          .catch(reject);
+      });
+
+    const buildImageUrls = async (sources) => {
+      const tasks = sources.map(async (src) => {
+        try {
+          const absolute = new URL(src, window.location.href).href;
+          return await toDataUrl(absolute);
+        } catch (error) {
+          return null;
+        }
+      });
+      const results = await Promise.all(tasks);
+      return results.filter(Boolean);
+    };
+
+    const callVisionApi = async (prompt, sources) => {
+      const imageUrls = await buildImageUrls(sources);
+      if (!imageUrls.length && sources.length) return "";
+      const finalPrompt = `${SYSTEM_CONTEXT}\n${prompt}`;
+      const response = await fetch(`${API_BASE}/api/vision`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: finalPrompt, image_urls: imageUrls }),
+      });
+      if (!response.ok) {
+        return "";
+      }
+      const data = await response.json();
+      return data.output || "";
+    };
+
+    const generateAiSummary = async (sources, context) => {
+      const prompt = [
+        "请用一段温暖、简洁的中文总结这些家庭照片，强调情绪与日常细节，不超过60字。",
+        context ? `场景提示：${context}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+      try {
+        return await callVisionApi(prompt, sources);
+      } catch (error) {
+        return "";
+      }
+    };
+
+    const updateShareSummary = async () => {
+      if (!shareSummary) return;
+      const selected = Array.from(shareGrid.querySelectorAll(".select-item.selected"))
+        .map((item) => item.dataset.image)
+        .filter(Boolean);
+      if (!selected.length) {
+        shareSummary.textContent = "请选择至少一张照片生成 AI 总结。";
+        return;
+      }
+      shareSummary.textContent = "AI 总结生成中...";
+      const summary = await generateAiSummary(selected, "我准备分享给家人的照片");
+      shareSummary.textContent = summary || "AI 总结暂不可用";
+    };
 
     const bellBtn = document.getElementById("bell-btn");
     const bellPanel = document.getElementById("bell-panel");

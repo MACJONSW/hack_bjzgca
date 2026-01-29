@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家桥 · 温馨宣传海报</title>
+  <title>家桥 · 海报</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --cream: #fff4ea;
+      --milk: #fffaf6;
       --sunset: #ffb38a;
       --rose: #ff8f7c;
       --berry: #e05b68;
       --cocoa: #3f2b22;
       --ink: #2a1f1b;
-      --mist: rgba(255, 255, 255, 0.72);
-      --card: rgba(255, 255, 255, 0.88);
-      --shadow: 0 30px 60px rgba(62, 42, 33, 0.22);
+      --warm: rgba(255, 210, 185, 0.7);
+      --mist: rgba(255, 255, 255, 0.78);
+      --shadow: 0 28px 60px rgba(62, 42, 33, 0.2);
     }
 
     * {
@@ -27,316 +28,427 @@
     body {
       margin: 0;
       font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-      color: var(--ink);
-      min-height: 100vh;
       background: radial-gradient(circle at 10% 10%, #fff0e6, #fff7f1 45%, #fffaf6 70%),
         linear-gradient(135deg, #fff6ed 0%, #fffdf9 100%);
+      min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(255, 200, 173, 0.35) 1px, transparent 1px),
-        radial-gradient(rgba(255, 230, 214, 0.6) 1px, transparent 1px);
-      background-size: 28px 28px, 44px 44px;
-      background-position: 0 0, 16px 16px;
-      pointer-events: none;
+      padding: 24px;
+      color: var(--ink);
     }
 
     .poster {
       width: min(420px, 92vw);
       aspect-ratio: 9 / 16;
-      background: var(--card);
+      background: var(--milk);
       border-radius: 32px;
       box-shadow: var(--shadow);
-      padding: 28px 24px;
+      border: 1px solid rgba(255, 195, 170, 0.7);
+      padding: 18px 16px 16px;
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(255, 195, 170, 0.7);
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 18px;
+      grid-template-rows: auto auto auto 1fr auto;
+      gap: 10px;
     }
 
-    .poster::after {
+    .poster::before {
       content: "";
       position: absolute;
-      right: -120px;
-      top: -80px;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(255, 182, 148, 0.5), transparent 60%);
-      filter: blur(0.5px);
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 200, 173, 0.35) 1px, transparent 1px),
+        radial-gradient(rgba(255, 230, 214, 0.6) 1px, transparent 1px);
+      background-size: 26px 26px, 42px 42px;
+      background-position: 0 0, 12px 12px;
+      pointer-events: none;
     }
 
     .header {
+      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      z-index: 1;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
       display: grid;
       place-items: center;
       font-family: "ZCOOL XiaoWei", serif;
-      font-size: 26px;
+      font-size: 20px;
       color: #fff;
       background: linear-gradient(135deg, var(--sunset), var(--rose));
-      box-shadow: 0 16px 32px rgba(255, 154, 124, 0.35);
+      box-shadow: 0 12px 24px rgba(255, 154, 124, 0.35);
     }
 
     .brand h1 {
       margin: 0;
       font-family: "ZCOOL XiaoWei", serif;
-      font-size: 32px;
+      font-size: 22px;
       color: var(--cocoa);
     }
 
     .brand p {
-      margin: 6px 0 0;
-      font-size: 13px;
+      margin: 4px 0 0;
+      font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #a18477;
     }
 
     .tagline {
-      max-width: 180px;
-      font-size: 14px;
+      font-size: 11px;
       color: #7a5d52;
-      line-height: 1.6;
       background: var(--mist);
-      padding: 12px 16px;
-      border-radius: 16px;
+      padding: 8px 12px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 190, 164, 0.5);
+      text-align: right;
+      max-width: 150px;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      align-items: center;
+    .title {
+      position: relative;
+      z-index: 1;
     }
 
-    .hero-text h2 {
-      font-size: 28px;
-      margin: 0 0 12px;
+    .title h2 {
+      margin: 0;
+      font-size: 22px;
       color: var(--cocoa);
+      line-height: 1.3;
     }
 
-    .hero-text h2 span {
+    .title h2 span {
       color: var(--berry);
     }
 
-    .hero-text p {
-      margin: 0 0 18px;
-      line-height: 1.75;
+    .title p {
+      margin: 6px 0 0;
+      font-size: 12px;
       color: #6f5750;
+      line-height: 1.6;
+    }
+
+    .bridge {
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 197, 173, 0.45);
+      padding: 12px;
+      box-shadow: 0 16px 30px rgba(62, 42, 33, 0.12);
+      display: grid;
+      gap: 8px;
+    }
+
+    .bridge-visual {
+      position: relative;
+      height: 110px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255, 236, 220, 0.9), rgba(255, 250, 244, 0.9));
+      border: 1px dashed rgba(255, 176, 138, 0.7);
+      overflow: hidden;
+    }
+
+    .bridge-line {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50%;
+      height: 6px;
+      background: linear-gradient(90deg, rgba(255, 176, 138, 0.2), rgba(255, 160, 124, 0.7), rgba(255, 176, 138, 0.2));
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(255, 155, 120, 0.35);
+    }
+
+    .bridge-arc {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 18%;
+      height: 120px;
+      border-radius: 120px;
+      border: 2px solid rgba(255, 170, 138, 0.6);
+      border-bottom: none;
+    }
+
+    .bubble {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid rgba(255, 197, 173, 0.7);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 20px rgba(62, 42, 33, 0.12);
+      font-size: 18px;
+    }
+
+    .bubble small {
+      position: absolute;
+      bottom: -18px;
+      font-size: 10px;
+      color: #9a7f74;
+      white-space: nowrap;
+    }
+
+    .bubble.left {
+      left: 8%;
+      top: 56%;
+    }
+
+    .bubble.center {
+      left: 50%;
+      top: 30%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, rgba(255, 221, 200, 0.9), rgba(255, 255, 255, 0.9));
+    }
+
+    .bubble.right {
+      right: 8%;
+      top: 56%;
+    }
+
+    .bridge-notes {
+      display: grid;
+      gap: 4px;
+      font-size: 11px;
+      color: #7a5d52;
     }
 
     .pill-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .pill {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255, 186, 156, 0.2);
-      border: 1px solid rgba(255, 160, 124, 0.4);
-      font-size: 12px;
-      color: #a35f4a;
-    }
-
-    .mock {
-      background: #fff;
-      border-radius: 28px;
-      padding: 18px;
-      border: 1px solid rgba(255, 197, 173, 0.5);
-      box-shadow: 0 18px 36px rgba(62, 42, 33, 0.12);
-      position: relative;
-    }
-
-    .mock::before {
-      content: "";
-      position: absolute;
-      inset: 14px;
-      border-radius: 22px;
-      border: 1px dashed rgba(255, 170, 138, 0.6);
-      pointer-events: none;
-    }
-
-    .mock-title {
-      font-weight: 600;
-      color: #7a5d52;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-
-    .mock-bubble {
-      background: #fff4ec;
-      border-radius: 18px;
-      padding: 12px 14px;
-      font-size: 13px;
-      color: #7a5d52;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255, 196, 170, 0.6);
-    }
-
-    .mock-note {
-      font-size: 12px;
-      color: #9a7f74;
-    }
-
-    .photo-stack {
-      margin-top: 8px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
     }
 
-    .photo-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 8px;
-      border: 1px solid rgba(255, 197, 173, 0.45);
-      box-shadow: 0 10px 22px rgba(62, 42, 33, 0.1);
+    .pill {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 186, 156, 0.2);
+      border: 1px solid rgba(255, 160, 124, 0.4);
+      font-size: 10px;
+      color: #a35f4a;
+    }
+
+    .pill.ai {
+      background: rgba(224, 91, 104, 0.14);
+      border-color: rgba(224, 91, 104, 0.35);
+      color: #b94d5d;
+    }
+
+    .feature-grid {
+      position: relative;
+      z-index: 1;
       display: grid;
-      gap: 6px;
-    }
-
-    .photo-card img {
-      width: 100%;
-      height: 90px;
-      border-radius: 14px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .photo-card span {
-      font-size: 11px;
-      color: #a06f60;
-      text-align: center;
-    }
-
-    .album-strip {
-      margin-top: 10px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 6px;
-    }
-
-    .album-strip img {
-      width: 100%;
-      height: 60px;
-      border-radius: 12px;
-      object-fit: cover;
-      border: 1px solid rgba(255, 197, 173, 0.4);
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .feature-scroll {
-      display: grid;
-      gap: 12px;
-      overflow: hidden;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
     }
 
     .feature-card {
       background: #fff;
-      border-radius: 20px;
-      padding: 16px;
+      border-radius: 18px;
+      padding: 10px;
       border: 1px solid rgba(255, 197, 173, 0.45);
-      box-shadow: 0 12px 24px rgba(62, 42, 33, 0.08);
+      box-shadow: 0 10px 22px rgba(62, 42, 33, 0.08);
       display: grid;
-      gap: 8px;
+      gap: 4px;
+      min-height: 96px;
     }
 
     .feature-card h4 {
       margin: 0;
-      font-size: 15px;
+      font-size: 12px;
       color: #7a5d52;
     }
 
     .feature-card p {
       margin: 0;
-      font-size: 12px;
+      font-size: 10px;
       color: #7a5d52;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    .feature-media {
+    .feature-card img {
+      width: 100%;
+      height: 48px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(255, 197, 173, 0.35);
+    }
+
+    .tech {
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 197, 173, 0.45);
+      padding: 12px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      box-shadow: 0 12px 24px rgba(62, 42, 33, 0.08);
+    }
+
+    .tech-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #6f5750;
+    }
+
+    .tech-sub {
+      font-size: 11px;
+      color: #9a7f74;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+      align-items: center;
+      text-align: center;
+      font-size: 10px;
+      color: #7a5d52;
+    }
+
+    .flow-node {
+      padding: 8px 6px;
+      border-radius: 12px;
+      background: #fff7f1;
+      border: 1px dashed rgba(255, 186, 151, 0.6);
+      line-height: 1.4;
+    }
+
+    .flow-arrow {
+      font-weight: 700;
+      color: #c06a4f;
+    }
+
+    .breakthroughs {
+      display: grid;
+      gap: 6px;
+      font-size: 10px;
+      color: #7a5d52;
+    }
+
+    .break-item {
+      padding: 8px;
+      border-radius: 12px;
+      background: #fff5ef;
+      border: 1px solid rgba(255, 197, 173, 0.4);
+      line-height: 1.5;
+    }
+
+    .break-item strong {
+      color: #b35e49;
+    }
+
+    .tools {
+      display: flex;
+      flex-wrap: wrap;
       gap: 6px;
     }
 
-    .feature-media img {
-      width: 100%;
-      height: 72px;
-      border-radius: 14px;
-      object-fit: cover;
-      border: 1px solid rgba(255, 197, 173, 0.4);
+    .tool {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 186, 156, 0.2);
+      border: 1px solid rgba(255, 160, 124, 0.4);
+      font-size: 10px;
+      color: #9a6b5d;
     }
 
-    .footer {
+    .feature-mini {
+      display: grid;
+      gap: 6px;
+    }
+
+    .bell-chip {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #fff5ef;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      font-size: 10px;
+      color: #7a5d52;
+    }
+
+    .bell-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      border: 1px solid rgba(255, 197, 173, 0.6);
+      font-size: 13px;
+    }
+
+    .chat-chip {
+      background: #fff;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 10px;
+      color: #7a5d52;
+      line-height: 1.4;
+    }
+
+    .chat-chip span {
+      display: inline-block;
+      margin-right: 4px;
+      color: #c06a4f;
+      font-weight: 600;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
 
     .cta {
-      padding: 12px 18px;
-      border-radius: 16px;
+      padding: 8px 12px;
+      border-radius: 14px;
       border: none;
       font-weight: 600;
       background: linear-gradient(135deg, var(--sunset), var(--rose));
       color: #fff;
       box-shadow: 0 12px 24px rgba(255, 150, 120, 0.35);
-      cursor: pointer;
     }
 
     .qr {
       display: grid;
-      gap: 8px;
+      gap: 4px;
       text-align: right;
-      font-size: 12px;
+      font-size: 10px;
       color: #a08378;
     }
 
     .qr-box {
-      width: 72px;
-      height: 72px;
-      border-radius: 14px;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
       background: repeating-linear-gradient(45deg, #f9ded1 0 8px, #fff4ee 8px 16px);
       border: 1px solid rgba(255, 190, 164, 0.6);
       display: grid;
       place-items: center;
-      font-size: 10px;
+      font-size: 9px;
       color: #c07a60;
     }
 
@@ -346,20 +458,11 @@
         border-radius: 0;
         min-height: 100vh;
       }
-      .photo-stack {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .album-strip {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .qr {
-        text-align: left;
-      }
     }
   </style>
 </head>
 <body>
-  <div class="poster" role="img" aria-label="家桥 9:16 温馨宣传海报">
+  <div class="poster" role="img" aria-label="家桥 9:16 海报">
     <div class="header">
       <div class="brand">
         <div class="logo">家</div>
@@ -368,110 +471,109 @@
           <p>HearthBridge</p>
         </div>
       </div>
-      <div class="tagline">让随手拍、家庭共鸣、随地聊变成同一条温暖路径。</div>
+      <div class="tagline">为中国家庭搭一座好好说话的桥</div>
     </div>
 
-    <section class="hero">
-      <div class="hero-text">
-        <h2>心语桥 · 影集<span> 与随地聊</span></h2>
-        <p>个人拾光区记录日常，轻触分享进入家庭共鸣空间；点击气球关键词就能自然开启对话。家桥把生活与沟通连成一条温暖的桥。</p>
-        <div class="pill-group">
-          <div class="pill">个人拾光区</div>
-          <div class="pill">家庭共鸣空间</div>
-          <div class="pill">家庭成员总结</div>
-          <div class="pill">随地聊气球</div>
-          <div class="pill">平安铃铛</div>
-        </div>
+    <div class="title">
+      <h2>把沉默变成<span>温柔的对话</span></h2>
+      <p>减少“怕打扰”、化解“说不出口”，让两代人重新靠近。</p>
+    </div>
+
+    <section class="bridge">
+      <div class="bridge-visual">
+        <div class="bridge-arc"></div>
+        <div class="bridge-line"></div>
+        <div class="bubble left">👵<small>父母</small></div>
+        <div class="bubble center">🌉<small>代沟</small></div>
+        <div class="bubble right">🧑<small>子女</small></div>
       </div>
-      <div class="mock">
-        <div class="mock-title">今日家桥画面</div>
-        <div class="mock-bubble">“我 11:03 · 已报平安”，妈妈上传的照片进入家庭共鸣空间。</div>
-        <div class="mock-bubble">点击气球关键词，聊天框自动生成一句暖心对话。</div>
-        <div class="mock-note">一键预览家庭照片，查看时光总结。</div>
-        <div class="album-strip">
-          <img src="static/1769654310825_d.jpg" alt="家庭照片 1" />
-          <img src="static/1769657502902_d.jpg" alt="家庭照片 2" />
-          <img src="static/1769657875517_d.jpg" alt="家庭照片 3" />
-          <img src="static/food.jpg" alt="家庭照片 4" />
-        </div>
+      <div class="bridge-notes">
+        <div>随手拍 → 个人拾光 → 分享到家庭共鸣</div>
+        <div>随地聊气球 → 一键生成对话 → 缓解尴尬</div>
+        <div>AI 总结 → 一段话读懂家庭动态</div>
+      </div>
+      <div class="pill-group">
+        <div class="pill">随地聊</div>
+        <div class="pill">个人拾光区</div>
+        <div class="pill">家庭共鸣空间</div>
+        <div class="pill">家庭成员总结</div>
+        <div class="pill ai">AI 时光总结</div>
+        <div class="pill">平安铃铛</div>
       </div>
     </section>
 
-    <section class="photo-stack" aria-label="随地聊与拾光示意">
-      <div class="photo-card">
-        <img src="jst/开心.jpeg" alt="随地聊关键词 开心" />
-        <span>随地聊 · 开心小事</span>
+    <section class="feature-grid">
+      <div class="feature-card">
+        <h4>随地聊气球</h4>
+        <p>点击气球话题，自动生成聊天内容。</p>
+        <div class="feature-mini">
+          <div class="chat-chip"><span>我</span>看到你发的照片啦，今天过得怎么样？</div>
+          <div class="chat-chip"><span>我</span>这顿火锅看起来好香，下次带我去。</div>
+        </div>
       </div>
-      <div class="photo-card">
-        <img src="jst/火锅.jpg" alt="随地聊关键词 火锅" />
-        <span>随地聊 · 火锅时刻</span>
-      </div>
-      <div class="photo-card">
-        <img src="jst/电影.jpg" alt="随地聊关键词 电影" />
-        <span>随地聊 · 电影分享</span>
-      </div>
-    </section>
-
-    <section class="features">
-      <div class="feature-scroll">
       <div class="feature-card">
         <h4>个人拾光区</h4>
-        <p>随手拍记录开心时刻，自动生成个人总结，支持一键分享。</p>
-        <div class="feature-media">
-          <img src="personal_context/hack.jpg" alt="个人拾光 1" />
-          <img src="personal_context/1769653727127_d.jpg" alt="个人拾光 2" />
-        </div>
+        <p>随手拍记录生活，选择发送家庭共鸣。</p>
+        <img src="personal_context/hack.jpg" alt="个人拾光" />
       </div>
       <div class="feature-card">
         <h4>家庭共鸣空间</h4>
-        <p>家庭共享照片以气泡呈现，一键预览全部并查看时光总结。</p>
-        <div class="feature-media">
-          <img src="static/1769657776345_d.jpg" alt="家庭共鸣 1" />
-          <img src="static/1769657794037_d.jpg" alt="家庭共鸣 2" />
-        </div>
-      </div>
-      <div class="feature-card">
-        <h4>家庭成员总结</h4>
-        <p>爸爸、妈妈、我的最近十天照片与总结，点击即可查看。</p>
-        <div class="feature-media">
-          <img src="static/1769656851571_d.jpg" alt="成员总结 1" />
-          <img src="static/1769657827881_d.jpg" alt="成员总结 2" />
-        </div>
-      </div>
-      <div class="feature-card">
-        <h4>随地聊气球</h4>
-        <p>气球关键词连接聊天窗口，点击即生成对话，沟通更自然。</p>
-        <div class="feature-media">
-          <img src="jst/雪.jpeg" alt="随地聊 雪" />
-          <img src="jst/开心.jpeg" alt="随地聊 开心" />
-        </div>
+        <p>气泡照片 + 一键预览 + 时光总结。</p>
+        <img src="static/1769657776345_d.jpg" alt="家庭共鸣" />
       </div>
       <div class="feature-card">
         <h4>平安铃铛</h4>
-        <p>轻触报平安，面板展示家庭状态，安心不打扰。</p>
-        <div class="feature-media">
-          <img src="static/sun.jpg" alt="平安提示 1" />
-          <img src="static/yh.jpg" alt="平安提示 2" />
+        <p>轻触报平安，家庭状态一目了然。</p>
+        <div class="feature-mini">
+          <div class="bell-chip">
+            <div class="bell-icon">🔔</div>
+            <div>我 · 已报平安</div>
+          </div>
+          <div class="bell-chip">
+            <div class="bell-icon">🔔</div>
+            <div>爸爸 · 未报平安</div>
+          </div>
         </div>
-      </div>
-      <div class="feature-card">
-        <h4>心语桥·影集</h4>
-        <p>在同一页面聚合故事与影像，让记忆和沟通并行。</p>
-        <div class="feature-media">
-          <img src="static/mj.jpg" alt="影集 1" />
-          <img src="static/1769658191713_d.jpg" alt="影集 2" />
-        </div>
-      </div>
       </div>
     </section>
 
-    <div class="footer">
-      <button class="cta">立即开启家桥体验</button>
-      <div class="qr">
-        <div class="qr-box">扫码体验</div>
-        <div>扫码查看 Demo / 预约体验</div>
+    <section class="tech">
+      <div class="tech-title">技术路径（AI 大模型驱动）</div>
+      <div class="tech-sub">不堆术语，只强调技术链路的扎实与可落地性</div>
+      <div class="flow">
+        <div class="flow-node">多模态采集<br/>图片 / 语音 / 文本</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">语义理解层<br/>LLM 语义抽取 + 情感识别</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">生成与编排层<br/>AIGC 话题生成 / 摘要生成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">家庭共鸣分发<br/>场景化推送 + 低打扰触达</div>
       </div>
-    </div>
+      <div class="breakthroughs">
+        <div class="break-item">
+          <strong>问题</strong> 家庭成员总结信息碎、难理解<br/>
+          <strong>方案</strong> 大模型生成“最近十天”摘要，一段话读懂近况
+        </div>
+        <div class="break-item">
+          <strong>问题</strong> 家庭共鸣空间推送过于机械<br/>
+          <strong>方案</strong> 生成式大模型驱动“图片共鸣推送”，按情绪/场景智能编排
+        </div>
+        <div class="break-item">
+          <strong>问题</strong> 话题难以自然开启<br/>
+          <strong>方案</strong> LLM 生成对话话术，气球话题触发即成可发送表达
+        </div>
+      </div>
+      <div class="tools">
+        <div class="tool">🧠 LLM 引擎</div>
+        <div class="tool">🖼️ 多模态模型</div>
+        <div class="tool">🧩 AIGC 编排</div>
+        <div class="tool">📱 前端工程</div>
+        <div class="tool">☁️ 云存储</div>
+        <div class="tool">🔒 隐私安全</div>
+      </div>
+    </section>
+
+    <div class="footer"></div>
   </div>
 </body>
 </html>
