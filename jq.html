@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家桥 App · 前端原型</title>
+  <title>家桥 · 统一页面</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
@@ -274,6 +274,26 @@
       background: transparent;
     }
 
+    .ghost-btn {
+      border: 1px dashed rgba(255, 176, 138, 0.8);
+      background: #fff;
+      color: #a0705f;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
     .pill-group {
       display: flex;
       gap: 8px;
@@ -513,6 +533,38 @@
       margin-bottom: 6px;
     }
 
+    .fab-stack {
+      position: absolute;
+      right: 16px;
+      bottom: 92px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 5;
+    }
+
+    .fab {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      color: #b45f48;
+      box-shadow: 0 10px 24px rgba(62, 42, 33, 0.14);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .fab-stack[data-screen] {
+      display: none;
+    }
+
+    .fab-stack.active {
+      display: flex;
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -545,7 +597,7 @@
   </style>
 </head>
 <body>
-  <div class="app" role="application" aria-label="家桥 App 前端原型">
+  <div class="app" role="application" aria-label="家桥 统一页面">
     <div class="status-bar">
       <span id="clock">09:41</span>
       <div class="status-icons">
@@ -567,7 +619,7 @@
     </div>
 
     <main class="content">
-      <section class="screen active" id="screen-home">
+      <section class="screen active" id="screen-care">
         <div class="card">
           <div class="thermo">
             <div>
@@ -584,7 +636,7 @@
         <div class="card">
           <div class="section-title">
             <span>今日关怀</span>
-            <span class="chip">平安已报</span>
+            <span class="chip">平安 + 健康</span>
           </div>
           <div class="list">
             <div class="list-item">
@@ -601,13 +653,6 @@
                 <div style="font-size: 12px; color: #7a6258;">血压 130/85 · 本周平稳</div>
               </div>
             </div>
-            <div class="list-item">
-              <div class="bubble">🧵</div>
-              <div>
-                <strong>家话星期天</strong>
-                <div style="font-size: 12px; color: #7a6258;">本周话题已开启</div>
-              </div>
-            </div>
           </div>
           <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
             <span class="soft-note">温和提醒，只在需要时出现。</span>
@@ -617,38 +662,39 @@
 
         <div class="card">
           <div class="section-title">
-            <span>本周趋势</span>
+            <span>健康关怀</span>
             <span class="chip">健康小事记</span>
           </div>
-          <div class="tile-grid">
-            <div class="tile">
-              <strong>睡眠 7 小时</strong>
-              <span>比上周 +0.5h</span>
+          <div class="list">
+            <div class="list-item">
+              <div class="bubble">🦵</div>
+              <div>
+                <strong>爸爸 · 腿疼提到 1 次</strong>
+                <div style="font-size: 12px; color: #7a6258;">周三晚 · 轻度</div>
+              </div>
             </div>
-            <div class="tile">
-              <strong>关节轻微酸</strong>
-              <span>周三集中出现</span>
-            </div>
-            <div class="tile">
-              <strong>血压稳定</strong>
-              <span>早晚波动小</span>
-            </div>
-            <div class="tile">
-              <strong>散步 3 次</strong>
-              <span>建议继续保持</span>
-            </div>
+          </div>
+          <div class="notice">
+            <div class="notice-title">温和提醒</div>
+            爸爸周三提到腿疼，要不要问问？
           </div>
           <div class="care-script">
-            <div class="chip">关心脚本</div>
-            <p>爸，我看这周阴雨天多，你腿还酸吗？我给你寄的护膝记得戴。</p>
-            <button class="cta">一键发送</button>
+            <div class="chip">关心话语</div>
+            <p>爸，你这两天腿还酸吗？我给你寄的护膝记得戴。</p>
+            <div class="cta-group">
+              <button class="cta">一键发送</button>
+              <button class="ghost-btn">AI 生成话语</button>
+              <button class="ghost-btn">自己编辑</button>
+            </div>
           </div>
         </div>
+      </section>
 
+      <section class="screen" id="screen-story">
         <div class="card">
           <div class="section-title">
-            <span>家庭对话</span>
-            <span class="chip">心语桥魔法光效</span>
+            <span>心语桥 · 话语翻译</span>
+            <span class="chip">嵌入式</span>
           </div>
           <div class="chat-card">
             <div class="chat-bubble" data-translate>
@@ -663,110 +709,23 @@
               </div>
             </div>
           </div>
+          <div class="input-wrap">
+            <input id="bridge-input" type="text" placeholder="输入一句话，如：我没事" />
+            <button class="cta" id="bridge-btn">翻译</button>
+          </div>
+          <div class="pill-group">
+            <div class="pill" data-text="我没事">我没事</div>
+            <div class="pill" data-text="别乱花钱">别乱花钱</div>
+            <div class="pill" data-text="不用回来了">不用回来了</div>
+          </div>
+          <div class="result" id="bridge-result"></div>
+          <p class="soft-note">内容仅家庭可见，可随时关闭。</p>
         </div>
-      </section>
 
-      <section class="screen" id="screen-health">
-        <div class="card">
-          <div class="section-title">
-            <span>健康小事记</span>
-            <span class="chip">本周简报</span>
-          </div>
-          <div class="list">
-            <div class="list-item">
-              <div class="bubble">🩺</div>
-              <div>
-                <strong>血压 130/85</strong>
-                <div style="font-size: 12px; color: #7a6258;">今天 08:30 · 正常</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">🦵</div>
-              <div>
-                <strong>膝盖酸</strong>
-                <div style="font-size: 12px; color: #7a6258;">周三晚 · 轻度</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">🌙</div>
-              <div>
-                <strong>睡眠 7 小时</strong>
-                <div style="font-size: 12px; color: #7a6258;">昨夜 · 稳定</div>
-              </div>
-            </div>
-          </div>
-          <div class="notice">
-            <div class="notice-title">温和提醒</div>
-            爸爸周三提到腿疼，要不要问问？
-          </div>
-          <p class="soft-note">AI 会将“腿疼”“睡不安稳”等模糊表达自动归类。</p>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-safety">
-        <div class="card">
-          <div class="section-title">
-            <span>平安小铃铛</span>
-            <span class="chip">已连续 12 天</span>
-          </div>
-          <div class="list">
-            <div class="list-item">
-              <div class="bubble">✅</div>
-              <div>
-                <strong>今日已打卡</strong>
-                <div style="font-size: 12px; color: #7a6258;">“今天挺好的”</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">🌨️</div>
-              <div>
-                <strong>寒潮关怀提醒</strong>
-                <div style="font-size: 12px; color: #7a6258;">自动触发</div>
-              </div>
-            </div>
-          </div>
-          <div class="notice">
-            <div class="notice-title">温和通知</div>
-            妈妈今天还没报平安，要不要打个电话？
-          </div>
-          <button class="cta" style="margin-top: 12px; width: 100%;">我很好 · 一键报平安</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-topic">
-        <div class="card">
-          <div class="section-title">
-            <span>家话星期天</span>
-            <span class="chip">本周话题</span>
-          </div>
-          <div style="font-size: 16px; font-weight: 600; color: var(--cocoa);">
-            “你年轻时最勇敢的事？”
-          </div>
-          <p class="soft-note">每周五更新，全家一起在故事墙留下回答。</p>
-          <div class="list" style="margin-top: 12px;">
-            <div class="list-item">
-              <div class="bubble">爸</div>
-              <div>
-                <strong>爸爸</strong>
-                <div style="font-size: 12px; color: #7a6258;">20岁那年背包去西北。</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">妈</div>
-              <div>
-                <strong>妈妈</strong>
-                <div style="font-size: 12px; color: #7a6258;">第一次站上讲台。</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-album">
-        <div class="card">
+        <div class="card" style="margin-top: 14px;">
           <div class="section-title">
             <span>家影集</span>
-            <span class="chip">共 128 张</span>
+            <span class="chip">AI + 相册</span>
           </div>
           <div class="list" style="margin-bottom: 12px;">
             <div class="list-item">
@@ -776,27 +735,14 @@
                 <div style="font-size: 12px; color: #7a6258;">自动剪辑 + 怀旧金曲 + 语音旁白</div>
               </div>
             </div>
-            <div class="list-item">
-              <div class="bubble">🧩</div>
-              <div>
-                <strong>AI 数字全家福</strong>
-                <div style="font-size: 12px; color: #7a6258;">分隔多地，也能生成节日虚拟合影</div>
-              </div>
-            </div>
           </div>
+          <div class="soft-note" style="margin-bottom: 12px;">父母或子女都可随手上传生活照片。</div>
           <div class="section-title" style="margin-top: 6px;">
             <span>AI 视频</span>
             <span class="chip">16:9</span>
           </div>
           <div class="album-grid">
             <div class="album-item placeholder video-slot">AI 生视频 · 16:9 视频位</div>
-          </div>
-          <div class="section-title" style="margin-top: 14px;">
-            <span>AI 数字全家福</span>
-            <span class="chip">节日合影</span>
-          </div>
-          <div class="album-grid">
-            <div class="album-item placeholder video-slot">AI 数字全家福 · 16:9 视频位</div>
           </div>
           <div class="section-title" style="margin-top: 14px;">
             <span>照片</span>
@@ -810,89 +756,26 @@
             <div class="album-item">全家短片</div>
             <div class="album-item">生成全家福</div>
           </div>
-          <p class="soft-note">自动轮播配语音，一键生成 15 秒回忆短片。</p>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-more">
-        <div class="card">
-          <div class="section-title">
-            <span>时光信箱</span>
-            <span class="chip">未来寄达</span>
-          </div>
-          <div class="list">
-            <div class="list-item">
-              <div class="bubble">📮</div>
-              <div>
-                <strong>2027 春节寄达</strong>
-                <div style="font-size: 12px; color: #7a6258;">给未来的你</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">🗓️</div>
-              <div>
-                <strong>事件触发</strong>
-                <div style="font-size: 12px; color: #7a6258;">“当你当父母”</div>
-              </div>
-            </div>
-            <div class="list-item">
-              <div class="bubble">📍</div>
-              <div>
-                <strong>旧地重游触发</strong>
-                <div style="font-size: 12px; color: #7a6258;">进入“某某小学”自动播放十年前的语音</div>
-              </div>
-            </div>
-          </div>
-          <div class="notice" style="margin-top: 12px;">
-            <div class="notice-title">空间触发示例</div>
-            “这学校是你小时候最调皮的地方，现在回来看看了吗？”
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 14px;">
-          <div class="section-title">
-            <span>心语桥 · 话语翻译</span>
-            <span class="chip">本地处理</span>
-          </div>
-          <div class="input-wrap">
-            <input id="bridge-input" type="text" placeholder="输入一句话，如：我没事" />
-            <button class="cta" id="bridge-btn">翻译</button>
-          </div>
-          <div class="pill-group">
-            <div class="pill" data-text="我没事">我没事</div>
-            <div class="pill" data-text="别乱花钱">别乱花钱</div>
-            <div class="pill" data-text="不用回来了">不用回来了</div>
-          </div>
-          <div class="result" id="bridge-result"></div>
-          <p class="soft-note">内容仅家庭可见，可随时关闭。</p>
+          <p class="soft-note">随手拍照片会在每周自动生成家庭小结。</p>
         </div>
       </section>
     </main>
 
+    <div class="fab-stack active" data-screen="care" aria-label="关怀快捷操作">
+      <button class="fab">🎤 语音上传</button>
+    </div>
+    <div class="fab-stack" data-screen="story" aria-label="心语桥影集快捷操作">
+      <button class="fab">📸 随手拍</button>
+    </div>
+
     <nav class="bottom-nav" aria-label="底部导航">
-      <button class="nav-btn active" data-target="home">
-        <div class="nav-dot">🏠</div>
-        首页
-      </button>
-      <button class="nav-btn" data-target="health">
+      <button class="nav-btn active" data-target="care">
         <div class="nav-dot">🩺</div>
-        健康
+        关怀
       </button>
-      <button class="nav-btn" data-target="safety">
-        <div class="nav-dot">🔔</div>
-        平安
-      </button>
-      <button class="nav-btn" data-target="topic">
-        <div class="nav-dot">🧵</div>
-        家话
-      </button>
-      <button class="nav-btn" data-target="album">
-        <div class="nav-dot">📷</div>
-        影集
-      </button>
-      <button class="nav-btn" data-target="more">
+      <button class="nav-btn" data-target="story">
         <div class="nav-dot">✨</div>
-        更多
+        心语桥·影集
       </button>
     </nav>
   </div>
@@ -914,6 +797,9 @@
         const target = btn.dataset.target;
         screens.forEach((screen) => screen.classList.remove("active"));
         document.getElementById(`screen-${target}`).classList.add("active");
+        document.querySelectorAll(".fab-stack").forEach((fab) => {
+          fab.classList.toggle("active", fab.dataset.screen === target);
+        });
       });
     });
 
