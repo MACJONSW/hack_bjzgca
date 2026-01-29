@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>家桥 App · 前端原型</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #fff6ee;
+      --milk: #fffaf5;
+      --peach: #ffd7c2;
+      --apricot: #ffb388;
+      --rose: #ff8e7a;
+      --cocoa: #4a352d;
+      --ink: #2b221d;
+      --sage: #9dbd9b;
+      --sky: #a7c8ff;
+      --lavender: #ccb7ff;
+      --shadow: 0 20px 50px rgba(62, 42, 33, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 10%, #fff0e6, #fff7f1 45%, #fffaf6 70%),
+        linear-gradient(130deg, #fff6ed 0%, #fffdf9 100%);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 191, 166, 0.25) 1px, transparent 1px),
+        radial-gradient(rgba(255, 230, 214, 0.5) 1px, transparent 1px);
+      background-size: 22px 22px, 34px 34px;
+      background-position: 0 0, 12px 12px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      width: min(420px, 100%);
+      height: min(860px, 100vh);
+      background: var(--milk);
+      border-radius: 36px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 197, 173, 0.5);
+      z-index: 1;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 22px 10px;
+      font-size: 12px;
+      color: #8d756c;
+      background: #fff;
+      border-bottom: 1px solid rgba(255, 205, 183, 0.5);
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffd1b8;
+    }
+
+    .header {
+      padding: 20px 22px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 20px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--apricot), var(--rose));
+      box-shadow: 0 10px 24px rgba(255, 152, 125, 0.35);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: "ZCOOL XiaoWei", serif;
+      font-size: 22px;
+      color: var(--cocoa);
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9a7f74;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #ffe6d5;
+      display: grid;
+      place-items: center;
+      color: #c75a3d;
+      font-weight: 600;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 18px 110px;
+      display: block;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 14px 28px rgba(60, 40, 32, 0.08);
+      border: 1px solid rgba(255, 197, 173, 0.35);
+    }
+
+    .card + .card {
+      margin-top: 14px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      color: #7a6258;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .chip {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff1e7;
+      color: #a06f60;
+    }
+
+    .cta {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--apricot), var(--rose));
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 12px 22px rgba(255, 152, 125, 0.3);
+    }
+
+    .cta:active {
+      transform: scale(0.98);
+    }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .tile {
+      border-radius: 20px;
+      padding: 14px;
+      background: #fff7f1;
+      border: 1px dashed rgba(255, 186, 151, 0.6);
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tile strong {
+      font-size: 14px;
+    }
+
+    .tile span {
+      font-size: 12px;
+      color: #7c655d;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .list-item {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: #fff7f1;
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .bubble {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      font-size: 18px;
+    }
+
+    .input-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid rgba(255, 202, 176, 0.6);
+    }
+
+    .input-wrap input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 14px;
+      background: transparent;
+    }
+
+    .pill-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      background: #fff4ee;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #8a6a5d;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 12px;
+      background: #fff7f2;
+      border-radius: 18px;
+      padding: 12px;
+      font-size: 13px;
+      color: #6f5850;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .result.active {
+      display: block;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .album-item {
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(135deg, #ffd7c2, #fff4ee);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #8a6a5d;
+      font-size: 12px;
+      text-align: center;
+      padding: 6px;
+    }
+
+    .album-item.placeholder {
+      background: #fff;
+      border: 2px dashed rgba(255, 176, 138, 0.7);
+      color: #b08a7d;
+    }
+
+    .album-item.video-slot {
+      aspect-ratio: 16 / 9;
+      grid-column: 1 / -1;
+      font-size: 13px;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 12px 18px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 205, 183, 0.5);
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #b29a91;
+      cursor: pointer;
+      padding: 6px 0;
+      font-family: inherit;
+    }
+
+    .nav-btn.active {
+      color: #cf6a4f;
+      font-weight: 600;
+    }
+
+    .nav-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #fff2ea;
+      color: #cf6a4f;
+      font-size: 18px;
+    }
+
+    .soft-note {
+      font-size: 12px;
+      color: #8a6a5d;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    .thermo {
+      background: linear-gradient(120deg, rgba(255, 199, 170, 0.9), rgba(255, 236, 218, 0.9));
+      border-radius: 20px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(255, 190, 164, 0.6);
+    }
+
+    .thermo-bar {
+      flex: 1;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .thermo-fill {
+      height: 100%;
+      width: 78%;
+      background: linear-gradient(90deg, #ffd5b6, #ff9e7c);
+      border-radius: 999px;
+      box-shadow: 0 6px 12px rgba(255, 152, 125, 0.35);
+    }
+
+    .care-script {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      border-radius: 18px;
+      border: 1px dashed rgba(255, 176, 138, 0.7);
+      display: grid;
+      gap: 10px;
+    }
+
+    .care-script p {
+      margin: 0;
+      font-size: 13px;
+      color: #6f5850;
+      line-height: 1.6;
+    }
+
+    .care-script button {
+      justify-self: start;
+    }
+
+    .chat-card {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .chat-bubble {
+      background: #fff;
+      border-radius: 18px;
+      padding: 12px;
+      border: 1px solid rgba(255, 205, 183, 0.7);
+      box-shadow: 0 10px 24px rgba(62, 42, 33, 0.08);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .chat-bubble .from {
+      font-size: 12px;
+      color: #9a7f74;
+      margin-bottom: 6px;
+    }
+
+    .chat-heart {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #c08a6c;
+    }
+
+    .chat-heart .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff6e8, #f7d6b8);
+      display: grid;
+      place-items: center;
+      color: #c06a4f;
+      font-size: 12px;
+    }
+
+    .chat-translate {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #fff5e4;
+      border-radius: 14px;
+      font-size: 13px;
+      color: #7a5d52;
+      line-height: 1.6;
+      border: 1px solid rgba(240, 200, 160, 0.8);
+    }
+
+    .chat-bubble.active .chat-translate {
+      display: block;
+    }
+
+    .notice {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #fff1ea;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 182, 154, 0.7);
+      font-size: 13px;
+      color: #7a5d52;
+      line-height: 1.6;
+    }
+
+    .notice-title {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #c05c45;
+      margin-bottom: 6px;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 0;
+      }
+
+      .app {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="家桥 App 前端原型">
+    <div class="status-bar">
+      <span id="clock">09:41</span>
+      <div class="status-icons">
+        <div class="status-dot"></div>
+        <div class="status-dot"></div>
+        <span>82%</span>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="brand">
+        <div class="logo">家</div>
+        <div>
+          <h1>家桥</h1>
+          <p>Emotional Bridge</p>
+        </div>
+      </div>
+      <div class="avatar">妈</div>
+    </div>
+
+    <main class="content">
+      <section class="screen active" id="screen-home">
+        <div class="card">
+          <div class="thermo">
+            <div>
+              <div style="font-weight: 600; color: #7a5d52; font-size: 14px;">情感温度计</div>
+              <div style="font-size: 12px; color: #9a7f74;">本周互动多，家里更暖</div>
+            </div>
+            <div class="thermo-bar" aria-label="家庭温度">
+              <div class="thermo-fill"></div>
+            </div>
+          </div>
+          <div class="soft-note">如果温度变淡，会温和提醒“去看看家话星期天吧”。</div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>今日关怀</span>
+            <span class="chip">平安已报</span>
+          </div>
+          <div class="list">
+            <div class="list-item">
+              <div class="bubble">🔔</div>
+              <div>
+                <strong>平安小铃铛</strong>
+                <div style="font-size: 12px; color: #7a6258;">妈妈 08:12 · 语音“挺好的”</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🩺</div>
+              <div>
+                <strong>健康小事记</strong>
+                <div style="font-size: 12px; color: #7a6258;">血压 130/85 · 本周平稳</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🧵</div>
+              <div>
+                <strong>家话星期天</strong>
+                <div style="font-size: 12px; color: #7a6258;">本周话题已开启</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span class="soft-note">温和提醒，只在需要时出现。</span>
+            <button class="cta">一键问候</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>本周趋势</span>
+            <span class="chip">健康小事记</span>
+          </div>
+          <div class="tile-grid">
+            <div class="tile">
+              <strong>睡眠 7 小时</strong>
+              <span>比上周 +0.5h</span>
+            </div>
+            <div class="tile">
+              <strong>关节轻微酸</strong>
+              <span>周三集中出现</span>
+            </div>
+            <div class="tile">
+              <strong>血压稳定</strong>
+              <span>早晚波动小</span>
+            </div>
+            <div class="tile">
+              <strong>散步 3 次</strong>
+              <span>建议继续保持</span>
+            </div>
+          </div>
+          <div class="care-script">
+            <div class="chip">关心脚本</div>
+            <p>爸，我看这周阴雨天多，你腿还酸吗？我给你寄的护膝记得戴。</p>
+            <button class="cta">一键发送</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <span>家庭对话</span>
+            <span class="chip">心语桥魔法光效</span>
+          </div>
+          <div class="chat-card">
+            <div class="chat-bubble" data-translate>
+              <div class="from">妈妈 · 刚刚</div>
+              别乱花钱买东西。
+              <div class="chat-heart">
+                <div class="dot">❤</div>
+                长按查看“心语桥”翻译
+              </div>
+              <div class="chat-translate">
+                其实他很开心，只是怕你压力太大，你可以回复“这是专门为您挑的”。
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-health">
+        <div class="card">
+          <div class="section-title">
+            <span>健康小事记</span>
+            <span class="chip">本周简报</span>
+          </div>
+          <div class="list">
+            <div class="list-item">
+              <div class="bubble">🩺</div>
+              <div>
+                <strong>血压 130/85</strong>
+                <div style="font-size: 12px; color: #7a6258;">今天 08:30 · 正常</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🦵</div>
+              <div>
+                <strong>膝盖酸</strong>
+                <div style="font-size: 12px; color: #7a6258;">周三晚 · 轻度</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🌙</div>
+              <div>
+                <strong>睡眠 7 小时</strong>
+                <div style="font-size: 12px; color: #7a6258;">昨夜 · 稳定</div>
+              </div>
+            </div>
+          </div>
+          <div class="notice">
+            <div class="notice-title">温和提醒</div>
+            爸爸周三提到腿疼，要不要问问？
+          </div>
+          <p class="soft-note">AI 会将“腿疼”“睡不安稳”等模糊表达自动归类。</p>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-safety">
+        <div class="card">
+          <div class="section-title">
+            <span>平安小铃铛</span>
+            <span class="chip">已连续 12 天</span>
+          </div>
+          <div class="list">
+            <div class="list-item">
+              <div class="bubble">✅</div>
+              <div>
+                <strong>今日已打卡</strong>
+                <div style="font-size: 12px; color: #7a6258;">“今天挺好的”</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🌨️</div>
+              <div>
+                <strong>寒潮关怀提醒</strong>
+                <div style="font-size: 12px; color: #7a6258;">自动触发</div>
+              </div>
+            </div>
+          </div>
+          <div class="notice">
+            <div class="notice-title">温和通知</div>
+            妈妈今天还没报平安，要不要打个电话？
+          </div>
+          <button class="cta" style="margin-top: 12px; width: 100%;">我很好 · 一键报平安</button>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-topic">
+        <div class="card">
+          <div class="section-title">
+            <span>家话星期天</span>
+            <span class="chip">本周话题</span>
+          </div>
+          <div style="font-size: 16px; font-weight: 600; color: var(--cocoa);">
+            “你年轻时最勇敢的事？”
+          </div>
+          <p class="soft-note">每周五更新，全家一起在故事墙留下回答。</p>
+          <div class="list" style="margin-top: 12px;">
+            <div class="list-item">
+              <div class="bubble">爸</div>
+              <div>
+                <strong>爸爸</strong>
+                <div style="font-size: 12px; color: #7a6258;">20岁那年背包去西北。</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">妈</div>
+              <div>
+                <strong>妈妈</strong>
+                <div style="font-size: 12px; color: #7a6258;">第一次站上讲台。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-album">
+        <div class="card">
+          <div class="section-title">
+            <span>家影集</span>
+            <span class="chip">共 128 张</span>
+          </div>
+          <div class="list" style="margin-bottom: 12px;">
+            <div class="list-item">
+              <div class="bubble">🎬</div>
+              <div>
+                <strong>15 秒家庭短片</strong>
+                <div style="font-size: 12px; color: #7a6258;">自动剪辑 + 怀旧金曲 + 语音旁白</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🧩</div>
+              <div>
+                <strong>AI 数字全家福</strong>
+                <div style="font-size: 12px; color: #7a6258;">分隔多地，也能生成节日虚拟合影</div>
+              </div>
+            </div>
+          </div>
+          <div class="section-title" style="margin-top: 6px;">
+            <span>AI 视频</span>
+            <span class="chip">16:9</span>
+          </div>
+          <div class="album-grid">
+            <div class="album-item placeholder video-slot">AI 生视频 · 16:9 视频位</div>
+          </div>
+          <div class="section-title" style="margin-top: 14px;">
+            <span>AI 数字全家福</span>
+            <span class="chip">节日合影</span>
+          </div>
+          <div class="album-grid">
+            <div class="album-item placeholder video-slot">AI 数字全家福 · 16:9 视频位</div>
+          </div>
+          <div class="section-title" style="margin-top: 14px;">
+            <span>照片</span>
+            <span class="chip">相册</span>
+          </div>
+          <div class="album-grid">
+            <div class="album-item">春节合影</div>
+            <div class="album-item">爷爷年轻时</div>
+            <div class="album-item">周末野餐</div>
+            <div class="album-item">老照片修复</div>
+            <div class="album-item">全家短片</div>
+            <div class="album-item">生成全家福</div>
+          </div>
+          <p class="soft-note">自动轮播配语音，一键生成 15 秒回忆短片。</p>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-more">
+        <div class="card">
+          <div class="section-title">
+            <span>时光信箱</span>
+            <span class="chip">未来寄达</span>
+          </div>
+          <div class="list">
+            <div class="list-item">
+              <div class="bubble">📮</div>
+              <div>
+                <strong>2027 春节寄达</strong>
+                <div style="font-size: 12px; color: #7a6258;">给未来的你</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">🗓️</div>
+              <div>
+                <strong>事件触发</strong>
+                <div style="font-size: 12px; color: #7a6258;">“当你当父母”</div>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="bubble">📍</div>
+              <div>
+                <strong>旧地重游触发</strong>
+                <div style="font-size: 12px; color: #7a6258;">进入“某某小学”自动播放十年前的语音</div>
+              </div>
+            </div>
+          </div>
+          <div class="notice" style="margin-top: 12px;">
+            <div class="notice-title">空间触发示例</div>
+            “这学校是你小时候最调皮的地方，现在回来看看了吗？”
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 14px;">
+          <div class="section-title">
+            <span>心语桥 · 话语翻译</span>
+            <span class="chip">本地处理</span>
+          </div>
+          <div class="input-wrap">
+            <input id="bridge-input" type="text" placeholder="输入一句话，如：我没事" />
+            <button class="cta" id="bridge-btn">翻译</button>
+          </div>
+          <div class="pill-group">
+            <div class="pill" data-text="我没事">我没事</div>
+            <div class="pill" data-text="别乱花钱">别乱花钱</div>
+            <div class="pill" data-text="不用回来了">不用回来了</div>
+          </div>
+          <div class="result" id="bridge-result"></div>
+          <p class="soft-note">内容仅家庭可见，可随时关闭。</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="底部导航">
+      <button class="nav-btn active" data-target="home">
+        <div class="nav-dot">🏠</div>
+        首页
+      </button>
+      <button class="nav-btn" data-target="health">
+        <div class="nav-dot">🩺</div>
+        健康
+      </button>
+      <button class="nav-btn" data-target="safety">
+        <div class="nav-dot">🔔</div>
+        平安
+      </button>
+      <button class="nav-btn" data-target="topic">
+        <div class="nav-dot">🧵</div>
+        家话
+      </button>
+      <button class="nav-btn" data-target="album">
+        <div class="nav-dot">📷</div>
+        影集
+      </button>
+      <button class="nav-btn" data-target="more">
+        <div class="nav-dot">✨</div>
+        更多
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    const rules = {
+      "我没事": "其实是想你了，想多聊一会儿。",
+      "别乱花钱": "心疼你的辛苦，过得好比什么都重要。",
+      "不用回来了": "怕你奔波太累，但也盼你平安回家。",
+    };
+
+    const buttons = document.querySelectorAll(".nav-btn");
+    const screens = document.querySelectorAll(".screen");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.target;
+        screens.forEach((screen) => screen.classList.remove("active"));
+        document.getElementById(`screen-${target}`).classList.add("active");
+      });
+    });
+
+    const input = document.getElementById("bridge-input");
+    const result = document.getElementById("bridge-result");
+    const translate = () => {
+      const text = input.value.trim();
+      if (!text) {
+        result.classList.remove("active");
+        return;
+      }
+      result.textContent = rules[text] || "这句话背后可能是关心或想念，值得温柔回应。";
+      result.classList.add("active");
+    };
+
+    document.getElementById("bridge-btn").addEventListener("click", translate);
+    document.querySelectorAll(".pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        input.value = pill.dataset.text;
+        translate();
+      });
+    });
+
+    document.querySelectorAll("[data-translate]").forEach((bubble) => {
+      bubble.addEventListener("click", () => {
+        bubble.classList.toggle("active");
+      });
+    });
+
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById("clock").textContent = `${now.getHours().toString().padStart(2, "0")}:${now
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}`;
+    }, 1000);
+  </script>
+</body>
+</html>
