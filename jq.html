@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>家桥 · 统一页面</title>
+  <title>家桥 · 今天你和家人联系了吗</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" />
@@ -542,6 +542,11 @@
 
     .care-chat-options.hidden {
       display: none;
+    }
+
+    .care-start {
+      display: block;
+      margin: 10px auto 0;
     }
 
     .care-chat-option {
@@ -1312,7 +1317,7 @@
   </style>
 </head>
 <body>
-  <div class="app" role="application" aria-label="家桥 统一页面">
+  <div class="app" role="application" aria-label="家桥 今天你和家人联系了吗">
     <div class="status-bar">
       <span id="clock">09:41</span>
       <div class="status-icons">
@@ -1351,7 +1356,7 @@
           <div class="section-title">
             <span>从哪儿开始聊？</span>
           </div>
-          <button class="ghost-btn" id="care-start">看看家庭成员都在干什么</button>
+          <button class="ghost-btn care-start" id="care-start">看看家庭成员都在干什么</button>
           <div class="care-chat-options" id="care-chat-options">
             <button class="care-chat-option" data-key="开心">
               <img src="jst/开心.jpeg" alt="开心" />
@@ -1370,6 +1375,15 @@
               <span>下雪天的一段记录</span>
             </button>
           </div>
+        </div>
+        <div class="card" style="margin-top: 14px;">
+          <div class="section-title">
+            <span>手动发送</span>
+          </div>
+          <form class="input-wrap" id="care-form">
+            <input id="care-input" type="text" placeholder="妈妈刚刚上传了照片，要不要问一问？" />
+            <button class="cta" id="care-send" type="submit">发送</button>
+          </form>
         </div>
       </section>
 
@@ -1595,6 +1609,9 @@
     };
 
     const careChatWindow = document.getElementById("care-chat-window");
+    const careInput = document.getElementById("care-input");
+    const careSend = document.getElementById("care-send");
+    const careForm = document.getElementById("care-form");
 
     const appendCareMessage = (text) => {
       if (!careChatWindow) return;
@@ -1676,6 +1693,33 @@
         }, 900);
       });
     });
+
+    const sendCareInput = () => {
+      if (!careInput) return;
+      const text = careInput.value.trim();
+      if (!text) return;
+      appendCareMessage(text);
+      careInput.value = "";
+      careChatWindow.scrollTop = careChatWindow.scrollHeight;
+    };
+
+    if (careSend) {
+      careSend.addEventListener("click", sendCareInput);
+    }
+    if (careForm) {
+      careForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        sendCareInput();
+      });
+    }
+    if (careInput) {
+      careInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          sendCareInput();
+        }
+      });
+    }
 
     const resonanceField = document.getElementById("resonance-field");
     const staticImages = [
