@@ -794,6 +794,13 @@
       flex-wrap: wrap;
     }
 
+    .typewriter .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(4px);
+      animation: typeFloat 0.4s ease forwards;
+    }
+
     .member-list {
       display: grid;
       gap: 10px;
@@ -833,7 +840,7 @@
     .member-thumb img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
     }
 
@@ -987,6 +994,11 @@
       100% { transform: rotate(0deg); }
     }
 
+    @keyframes typeFloat {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -1118,8 +1130,8 @@
             </div>
             <div class="diary-cover">
               <strong>个人总结</strong>
-              <span class="soft-note">“这 7 天你过得很充实，是否要将这份快乐投射到家桥？”</span>
-              <span class="soft-note">Check 是一种自我治愈，而非审核。</span>
+              <span class="soft-note typewriter" data-text="“这 7 天你过得很充实，是否要将这份快乐投射到家桥？”"></span>
+              <span class="soft-note typewriter" data-text="Check 是一种自我治愈，而非审核。"></span>
             </div>
           </div>
 
@@ -1132,21 +1144,21 @@
               <div class="member-row">
                 <div class="member-avatar">爸</div>
                 <div class="member-thumb">
-                  <img src="static/1769656829735_d.jpg" alt="爸爸的照片" />
+                  <img src="static/1769654310825_d.jpg" alt="爸爸的照片" />
                 </div>
                 <button class="ghost-btn member-view" data-member="dad">查看</button>
               </div>
               <div class="member-row">
                 <div class="member-avatar">妈</div>
                 <div class="member-thumb">
-                  <img src="static/1769656851571_d.jpg" alt="妈妈的照片" />
+                  <img src="static/1769657502902_d.jpg" alt="妈妈的照片" />
                 </div>
                 <button class="ghost-btn member-view" data-member="mom">查看</button>
               </div>
               <div class="member-row">
                 <div class="member-avatar">我</div>
                 <div class="member-thumb">
-                  <img src="static/1769656877772_d.jpg" alt="我的照片" />
+                  <img src="static/1769657875517_d.jpg" alt="我的照片" />
                 </div>
                 <button class="ghost-btn member-view" data-member="me">查看</button>
               </div>
@@ -1194,18 +1206,17 @@
         </div>
         <div class="soft-note">选择想分享的照片（可多选）</div>
         <div class="select-grid" id="share-grid">
-          <div class="select-item" data-image="personal_context/hack.jpg">
+          <div class="select-item selected" data-image="personal_context/hack.jpg">
             <img src="personal_context/hack.jpg" alt="拾光 A" />
           </div>
-          <div class="select-item" data-image="personal_context/1769653727127_d.jpg">
+          <div class="select-item selected" data-image="personal_context/1769653727127_d.jpg">
             <img src="personal_context/1769653727127_d.jpg" alt="拾光 B" />
           </div>
-          <div class="select-item" data-image="personal_context/1769654339765_d.jpg">
+          <div class="select-item selected" data-image="personal_context/1769654339765_d.jpg">
             <img src="personal_context/1769654339765_d.jpg" alt="拾光 C" />
           </div>
         </div>
-        <button class="ghost-btn" id="share-generate">生成这段时间的照片总结</button>
-        <div class="summary-card hidden" id="share-summary">
+        <div class="summary-card" id="share-summary">
           这段时间你记录了工作与小确幸，也有生活里的温暖瞬间。整体氛围轻松而有活力，适合分享给家人一起回味。
         </div>
         <label class="toggle-row">
@@ -1408,17 +1419,35 @@
     const memberData = {
       dad: {
         label: "爸爸",
-        images: sliceWithWrap(0, 5),
+        images: [
+          "static/1769654310825_d.jpg",
+          "static/1769656829735_d.jpg",
+          "static/1769656851571_d.jpg",
+          "static/1769656877772_d.jpg",
+          "static/1769657480760_d.jpg",
+        ],
         summary: "爸爸最近十天记录多是日常与散步，画面朴实，节奏稳。",
       },
       mom: {
         label: "妈妈",
-        images: sliceWithWrap(5, 5),
+        images: [
+          "static/1769657502902_d.jpg",
+          "static/1769657749561_d.jpg",
+          "static/1769657776345_d.jpg",
+          "static/1769657794037_d.jpg",
+          "static/1769657827881_d.jpg",
+        ],
         summary: "妈妈的照片多为生活片段与家常细节，氛围温暖。",
       },
       me: {
         label: "我",
-        images: sliceWithWrap(10, 5),
+        images: [
+          "static/1769657875517_d.jpg",
+          "static/1769658191713_d.jpg",
+          "static/1769658200937_d.jpg",
+          "static/1769658213096_d.jpg",
+          "static/food.jpg",
+        ],
         summary: "我的记录里有工作与小确幸，更多是放松与陪伴。",
       },
     };
@@ -1451,9 +1480,20 @@
     const shareBtn = document.querySelector(".share-pill");
     const shareClose = document.getElementById("share-close");
     const shareGrid = document.getElementById("share-grid");
-    const shareGenerate = document.getElementById("share-generate");
     const shareSummary = document.getElementById("share-summary");
     const shareConfirm = document.getElementById("share-confirm");
+
+    document.querySelectorAll(".typewriter").forEach((el, blockIndex) => {
+      const text = el.dataset.text || "";
+      el.textContent = "";
+      Array.from(text).forEach((char, index) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = char;
+        span.style.animationDelay = `${blockIndex * 500 + index * 35}ms`;
+        el.appendChild(span);
+      });
+    });
 
     shareBtn.addEventListener("click", () => {
       shareModal.classList.add("active");
@@ -1467,10 +1507,6 @@
       const item = event.target.closest(".select-item");
       if (!item) return;
       item.classList.toggle("selected");
-    });
-
-    shareGenerate.addEventListener("click", () => {
-      shareSummary.classList.remove("hidden");
     });
 
     shareConfirm.addEventListener("click", () => {
